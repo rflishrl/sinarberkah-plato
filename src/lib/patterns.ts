@@ -3,7 +3,7 @@ import type { GalleryItem, PatternSlide } from "@/types/api";
 
 /**
  * Mengubah pola dari API menjadi slide: satu pola satu slide, hanya gambar.
- * Jika API kosong atau gagal, dipakai gambar deretan pola bawaan.
+ * Jika belum ada pola di API, dipakai gambar deretan pola bawaan.
  */
 export function buildPatternSlides(items: GalleryItem[]): PatternSlide[] {
   if (items.length === 0) return patternSlides;

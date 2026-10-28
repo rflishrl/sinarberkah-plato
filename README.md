@@ -26,7 +26,9 @@ Old addresses `/cart` and `/produk` redirect to `/products`.
 | Hero slides, services, materials        | `src/data/content.ts` |
 | Phone numbers, address, map, navigation | `src/data/site.ts`    |
 
-The site reads the API on the server, waits at most 4 seconds, and caches each answer for one hour. A change made in the admin panel can take up to an hour to show up. If the API is down, the home, portfolio, and gallery pages show built-in sample content, and the products page shows an error message. A page never crashes because of the API.
+The site reads the API on the server, waits at most 6 seconds, retries once, and checks the shape of every answer. Lists are fetched page by page (100 items per page, up to 10 pages), so nothing is cut off. It caches each answer for one hour. When the backend has `FRONTEND_URL` and `REVALIDATE_SECRET` set, saving in the admin panel clears the cache at once, so changes show up right away. If the API is down while a page rebuilds, the site keeps the last good page. It never swaps in sample content. A section with no data shows an empty message.
+
+The pages are built ahead of time, so `npm run build` needs the backend to be reachable. If it is not, the build stops with `Gagal memuat /api/...` and Vercel keeps the previous deployment live. Deploy the backend first.
 
 Photos uploaded through the admin panel live in Vercel Blob. Next.js optimizes them for you, so a phone downloads a smaller file than a desktop.
 
@@ -63,10 +65,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### Environment variables
 
-| Variable               | Purpose                                                                                                                                         |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `API_BASE_URL`         | Backend address without a trailing slash. Defaults to `https://sinarberkah-backend.vercel.app`. For a local backend use `http://localhost:4000` |
-| `NEXT_PUBLIC_SITE_URL` | Public address of this site. Used for the sitemap, `robots.txt`, and page metadata                                                              |
+| Variable               | Purpose                                                                                                                                                                 |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `API_BASE_URL`         | Backend address without a trailing slash. In development it defaults to `http://localhost:4000`. In production it defaults to `https://sinarberkah-backend.vercel.app`. |
+| `REVALIDATE_SECRET`    | Secret for `POST /api/revalidate`, the same value as in the backend. Leave empty to turn the endpoint off.                                                              |
+| `NEXT_PUBLIC_SITE_URL` | Public address of this site. Used for the sitemap, `robots.txt`, and page metadata                                                                                      |
 
 Restart `npm run dev` after you change `.env.local`.
 
@@ -79,6 +82,7 @@ Restart `npm run dev` after you change `.env.local`.
 | `npm run start`     | Runs the production build      |
 | `npm run lint`      | Checks the code with ESLint    |
 | `npm run typecheck` | Checks TypeScript types        |
+| `npm test`          | Runs the tests (Vitest)        |
 | `npm run format`    | Formats the code with Prettier |
 
 ## Design
@@ -122,7 +126,7 @@ src/
     layout/        Navbar and footer
     sections/      Home page sections, product grid, portfolio and pattern carousels
     ui/            Button, section heading, page header, image wrapper
-  data/            Site settings, static content, sample content for when the API is down
+  data/            Site settings and static content
   lib/             API client, formatting helpers, WhatsApp links, media query hook
   types/           TypeScript types for API data
 public/images/     Local photos and banner images
@@ -131,7 +135,7 @@ public/images/     Local photos and banner images
 ## Deploying to Vercel
 
 1. Push this repository to GitHub and import it at [vercel.com/new](https://vercel.com/new).
-2. Add the environment variables `API_BASE_URL` and `NEXT_PUBLIC_SITE_URL`.
+2. Add the environment variables `API_BASE_URL`, `NEXT_PUBLIC_SITE_URL`, and `REVALIDATE_SECRET` (the same value as in the backend).
 3. Deploy.
 
 `vercel.json` runs the site in Singapore (`sin1`), the closest region to Indonesia. Deploy the backend first, because this site needs its address. The backend README has the full steps.

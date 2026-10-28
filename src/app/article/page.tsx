@@ -19,9 +19,7 @@ export default async function ArticlePage() {
     <>
       <PageHeader title="Artikel" />
       <section className="container-page py-12 lg:py-16">
-        {articles === null ? (
-          <EmptyState message="Artikel belum dapat dimuat. Silakan coba lagi nanti." />
-        ) : articles.length === 0 ? (
+        {articles.length === 0 ? (
           <EmptyState message="Belum ada artikel." />
         ) : (
           <ul className="divide-y divide-line">

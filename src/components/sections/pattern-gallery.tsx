@@ -1,6 +1,6 @@
 import { PatternCarousel } from "@/components/sections/pattern-carousel";
 import { ButtonLink } from "@/components/ui/button";
-import { getPatterns } from "@/lib/api";
+import { getGallery } from "@/lib/api";
 import { buildPatternSlides } from "@/lib/patterns";
 
 function PatternHeader() {
@@ -22,7 +22,7 @@ function PatternHeader() {
 
 /** Galeri pola di beranda. Polanya diambil dari API backend. */
 export async function PatternGallery() {
-  const slides = buildPatternSlides(await getPatterns());
+  const slides = buildPatternSlides(await getGallery());
 
   return (
     <section id="patterns" className="py-16 lg:py-24">

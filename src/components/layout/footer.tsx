@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa6";
 
+import { CurrentYear } from "@/components/ui/current-year";
 import { footerLinks, siteConfig } from "@/data/site";
 import { whatsappLink } from "@/lib/whatsapp";
 
@@ -57,7 +58,8 @@ export function Footer() {
 
       <div className="border-t border-line">
         <p className="container-page py-5 text-sm text-muted">
-          &copy; {year} {siteConfig.name}. Hak cipta dilindungi.
+          &copy; <CurrentYear serverYear={year} /> {siteConfig.name}. Hak cipta
+          dilindungi.
         </p>
       </div>
     </footer>

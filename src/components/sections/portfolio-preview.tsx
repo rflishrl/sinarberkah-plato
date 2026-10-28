@@ -22,7 +22,7 @@ export function PortfolioPreview({ items }: { items: PortfolioItem[] }) {
           </ButtonLink>
         </div>
 
-        <PortfolioRow items={items} />
+        {items.length > 0 && <PortfolioRow items={items} />}
       </div>
     </section>
   );

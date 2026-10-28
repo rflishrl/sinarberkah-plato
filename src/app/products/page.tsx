@@ -18,9 +18,7 @@ export default async function ProductsPage() {
     <>
       <PageHeader title="Produk Sinar Berkah" />
       <section className="container-page py-12 lg:py-16">
-        {products === null ? (
-          <EmptyState message="Produk belum dapat dimuat. Silakan coba lagi nanti." />
-        ) : products.length === 0 ? (
+        {products.length === 0 ? (
           <EmptyState message="Belum ada produk." />
         ) : (
           <ProductGrid products={products} />

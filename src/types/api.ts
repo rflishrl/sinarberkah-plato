@@ -1,29 +1,49 @@
-export interface ApiImage {
-  image_url: string;
-}
+import { z } from "zod";
+
+/*
+ * Skema respons API backend. Dipakai di `src/lib/api.ts` untuk memeriksa data saat jalan,
+ * dan tipe TypeScript di bawahnya diturunkan dari skema yang sama.
+ * `image_url` boleh kosong (produk tanpa foto).
+ */
+const apiImageSchema = z.object({ image_url: z.string() });
+
+/** Item galeri dan portofolio dikembalikan API dengan bentuk yang sama. */
+export const galleryItemSchema = z.object({
+  _id: z.string(),
+  title: z.string(),
+  type: z.string(),
+  description: z.string(),
+  image: apiImageSchema,
+});
+
+export const articleSchema = z.object({
+  _id: z.string(),
+  title: z.string(),
+  category: z.string(),
+  content: z.string(),
+  createdAt: z.string(),
+  image: apiImageSchema,
+});
+
+export const productSchema = z.object({
+  _id: z.string(),
+  name: z.string(),
+  category: z.string(),
+  description: z.string(),
+  price: z.number(),
+  image: apiImageSchema,
+  isActive: z.boolean(),
+});
+
+export type ApiImage = z.infer<typeof apiImageSchema>;
+export type GalleryItem = z.infer<typeof galleryItemSchema>;
+export type PortfolioItem = GalleryItem;
+export type Article = z.infer<typeof articleSchema>;
+/** Produk dari API backend (`GET /api/products/v1`). */
+export type Product = z.infer<typeof productSchema>;
 
 export interface ApiListResponse<T> {
   data: T[];
-}
-
-/** Item galeri dan portofolio dikembalikan API dengan bentuk yang sama. */
-export interface GalleryItem {
-  _id: string;
-  title: string;
-  type: string;
-  description: string;
-  image: ApiImage;
-}
-
-export type PortfolioItem = GalleryItem;
-
-export interface Article {
-  _id: string;
-  title: string;
-  category: string;
-  content: string;
-  createdAt: string;
-  image: ApiImage;
 }
 
 export interface HeroSlide {
@@ -55,14 +75,3 @@ export interface Material {
 export type PatternSlide =
   | { id: string; kind: "image"; src: string; alt: string }
   | { id: string; kind: "strip"; src: string; alt: string };
-
-/** Produk dari API backend (`GET /api/products/v1`). */
-export interface Product {
-  _id: string;
-  name: string;
-  category: string;
-  description: string;
-  price: number;
-  image: ApiImage;
-  isActive: boolean;
-}

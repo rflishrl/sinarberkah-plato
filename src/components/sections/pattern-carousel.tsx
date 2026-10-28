@@ -92,7 +92,7 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
                 className="h-auto w-full"
               />
             ) : (
-              <div className="relative mx-auto h-[360px] w-full bg-white sm:h-[440px]">
+              <div className="relative mx-auto h-[220px] w-full bg-white sm:h-[360px] lg:h-[440px]">
                 <ContentImage
                   src={slide.src}
                   alt={slide.alt}
@@ -105,7 +105,7 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
         ))}
       </div>
 
-      <div className="relative mx-auto mt-6 flex w-full max-w-[695px] flex-wrap items-center justify-center">
+      <div className="relative mx-auto mt-3 flex w-full max-w-[695px] flex-wrap items-center justify-center">
         {slides.map((slide, i) => (
           <button
             key={slide.id}

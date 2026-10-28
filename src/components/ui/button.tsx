@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 type Variant = "primary" | "dark" | "outline";
 
 const base =
-  "inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-none px-4 py-2 text-base leading-[22px] font-semibold transition-colors duration-200 motion-reduce:transition-none lg:min-h-0";
+  "inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-none px-4 py-2 text-base leading-[22px] font-medium transition-colors duration-200 motion-reduce:transition-none lg:min-h-0";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-white hover:bg-brand-hover active:bg-brand-hover",

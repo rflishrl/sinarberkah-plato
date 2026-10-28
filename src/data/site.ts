@@ -26,7 +26,7 @@ export const siteConfig = {
     /** Nomor WhatsApp untuk pertanyaan umum (tombol "Hubungi Kami"). */
     whatsappGeneral: "6281274000418",
     /** Nomor WhatsApp untuk pemesanan (tombol "Pesan Sekarang"). */
-    whatsappOrder: "6285156674215",
+    whatsappOrder: "6281274000418",
     /** TODO: isi dengan email bisnis asli. Bagian email disembunyikan selama kosong. */
     email: undefined as string | undefined,
   },

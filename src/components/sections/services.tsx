@@ -10,12 +10,19 @@ export function Services() {
           title="Kami Memberikan Pelayanan Terbaik"
         />
 
-        <ul className="mx-auto mt-12 grid max-w-4xl gap-8 sm:grid-cols-3 sm:gap-0">
+        <ul className="mx-auto mt-12 grid max-w-[715px] gap-8 sm:grid-cols-3 sm:gap-0">
           {services.map(({ id, icon: Icon, title, description }) => (
-            <li key={id} className="border-l border-line px-6">
-              <Icon size={36} className="text-ink" aria-hidden="true" />
-              <h3 className="mt-3 font-heading text-base font-bold">{title}</h3>
-              <p className="mt-1 text-sm text-muted">{description}</p>
+            <li
+              key={id}
+              className="py-1.5 sm:border-l sm:border-line sm:px-6 sm:first:border-l-0 sm:first:pl-2.5"
+            >
+              <Icon size={46} className="text-ink" aria-hidden="true" />
+              <h3 className="mt-2 font-heading text-base leading-5 font-bold">
+                {title}
+              </h3>
+              <p className="mt-1 text-sm leading-[18px] font-medium text-muted">
+                {description}
+              </p>
             </li>
           ))}
         </ul>

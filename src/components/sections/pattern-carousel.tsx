@@ -113,11 +113,11 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
             onClick={() => scrollToSlide(i)}
             aria-label={`Tampilkan slide ${i + 1}`}
             aria-current={i === index}
-            className="group inline-flex size-6 cursor-pointer items-center justify-center"
+            className="group inline-flex h-6 w-[21px] cursor-pointer items-center justify-center"
           >
             <span
               className={cn(
-                "size-2.5 rounded-full transition-colors duration-200 motion-reduce:transition-none",
+                "size-[9px] rounded-full transition-colors duration-200 motion-reduce:transition-none",
                 i === index ? "bg-brand" : "bg-line group-hover:bg-muted/50",
               )}
             />

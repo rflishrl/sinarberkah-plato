@@ -10,7 +10,7 @@ export function PortfolioPreview({ items }: { items: PortfolioItem[] }) {
           <p className="text-sm font-bold tracking-wider text-brand uppercase">
             Portofolio kami
           </p>
-          <h2 className="mt-2 font-heading text-2xl leading-tight font-bold text-balance sm:text-3xl">
+          <h2 className="mt-2 font-heading text-2xl leading-tight font-bold text-balance">
             Project Yang Pernah Kami Kerjakan
           </h2>
           <p className="mt-4 text-sm text-muted">

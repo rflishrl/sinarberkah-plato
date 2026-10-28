@@ -1,3 +1,141 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/*
+ * Design tokens, diambil dari Figma "PLATO Landing Page" (Version 2).
+ *
+ * - `brand` (#FF7062) adalah "main-orange" dari Figma, dipakai persis untuk tombol dan label.
+ *   Catatan: kontras #FF7062 terhadap putih hanya 2.8:1 (di bawah WCAG AA 4.5:1).
+ * - `muted` sedikit lebih gelap dari abu-abu Figma (#777) yang kontrasnya 4.48:1.
+ */
+@theme {
+  --color-brand: #ff7062;
+  --color-brand-hover: #e85a4c;
+  --color-accent: #55acee;
+  --color-ink: #222222;
+  --color-muted: #6b6b6b;
+  --color-surface: #f7f7f7;
+  --color-line: #e3e3e3;
+  --color-ghost: #eeeeee;
+
+  --shadow-card: 0 3px 8px 0 rgb(0 0 0 / 0.07);
+  --shadow-photo: 0 1px 12px 2px rgb(34 34 34 / 0.18);
+  --shadow-panel: 0 4px 8px 1px rgb(0 0 0 / 0.13);
+
+  --animate-fade-in: fade-in 350ms ease-out both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@theme inline {
+  --font-sans:
+    var(--font-open-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-heading:
+    var(--font-mulish), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-color, var(--color-brand));
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Lebar konten standar: maks 1280px (lebar frame Figma) dengan padding responsif. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1280px;
+  padding-inline: 1.25rem;
+
+  @media (min-width: 40rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (min-width: 64rem) {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* Bagian gelap: cincin fokus berwarna putih agar tetap terlihat. */
+@utility on-dark {
+  --focus-color: #fff;
+}
+
+/*
+ * Baris gambar yang bergeser otomatis (portofolio di beranda).
+ * Hanya aktif di desktop dengan mouse dan jika pengguna tidak meminta gerakan dikurangi.
+ * Di luar itu, baris tetap bisa digulir manual dan salinan gambar (data-clone) disembunyikan.
+ */
+.marquee-track [data-clone] {
+  display: none;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .marquee-viewport {
+    overflow: hidden;
+  }
+
+  .marquee-track {
+    animation: marquee var(--marquee-duration, 36s) linear infinite;
+  }
+
+  .marquee-track [data-clone] {
+    display: block;
+  }
+
+  .marquee-viewport:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Titik penanda hanya untuk baris yang digeser manual (mobile dan tablet): portofolio dan galeri pola. */
+@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .marquee-dots {
+    display: none;
+  }
+}

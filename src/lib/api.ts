@@ -25,15 +25,21 @@ import {
  *   menyimpan data, jadi perubahan tampil langsung. `REVALIDATE_SECONDS` hanya jaring pengaman.
  */
 
-const isProduction = process.env.NODE_ENV === "production";
-
-// Saat pengembangan, bawaannya backend lokal supaya tidak tak sengaja memakai data produksi.
-const API_BASE_URL = (
-  process.env.API_BASE_URL ??
-  (isProduction
-    ? "https://sinarberkah-backend.vercel.app"
-    : "http://localhost:4000")
-).replace(/\/$/, "");
+/**
+ * Alamat backend. Di produksi wajib diisi, supaya salah konfigurasi langsung terlihat
+ * (build gagal dengan pesan jelas) dan tidak diam-diam memakai alamat lain.
+ * Saat pengembangan, bawaannya backend lokal supaya tidak tak sengaja memakai data produksi.
+ */
+export function getApiBaseUrl(): string {
+  const configured = process.env.API_BASE_URL?.trim();
+  if (configured) return configured.replace(/\/$/, "");
+  if (process.env.NODE_ENV === "production") {
+    throw new ApiError(
+      "API_BASE_URL belum diisi. Variabel ini wajib di produksi.",
+    );
+  }
+  return "http://localhost:4000";
+}
 
 export const CACHE_TAGS = {
   portfolio: "portfolio",
@@ -71,11 +77,12 @@ const envelopeSchema = z.object({
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function requestJson(path: string, tag: CacheTag): Promise<unknown> {
+  const baseUrl = getApiBaseUrl();
   let lastError: unknown;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      const response = await fetch(`${API_BASE_URL}${path}`, {
+      const response = await fetch(`${baseUrl}${path}`, {
         next: { revalidate: REVALIDATE_SECONDS, tags: [tag] },
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       });

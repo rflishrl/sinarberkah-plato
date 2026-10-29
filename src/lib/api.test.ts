@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ApiError, getGallery, getProducts } from "@/lib/api";
+import { ApiError, getApiBaseUrl, getGallery, getProducts } from "@/lib/api";
 
 const fetchMock = vi.fn();
 
@@ -68,6 +68,23 @@ describe("fetchList (lewat getGallery)", () => {
   it("bentuk respons yang salah melempar ApiError", async () => {
     fetchMock.mockResolvedValueOnce(json({ items: [] }));
     await expect(getGallery()).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe("getApiBaseUrl", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("memakai API_BASE_URL tanpa garis miring di akhir", () => {
+    vi.stubEnv("API_BASE_URL", "https://api.example.com/");
+    expect(getApiBaseUrl()).toBe("https://api.example.com");
+  });
+
+  it("di produksi melempar error jika API_BASE_URL kosong", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("API_BASE_URL", "");
+    expect(() => getApiBaseUrl()).toThrow(/API_BASE_URL/);
+    await expect(getProducts()).rejects.toBeInstanceOf(ApiError);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
 

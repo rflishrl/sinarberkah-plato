@@ -10,6 +10,8 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Artikel",
   description: "Artikel dan informasi seputar ornamen, plat dan konstruksi.",
+  // Belum diindeks mesin pencari selama fitur artikel di backend belum ada.
+  robots: { index: false, follow: true },
 };
 
 export default async function ArticlePage() {

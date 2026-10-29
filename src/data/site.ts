@@ -54,5 +54,5 @@ export const footerLinks: NavLink[] = [
   { label: "Galeri Pola", href: "/gallery" },
   { label: "Bahan", href: "/#materials" },
   { label: "Produk", href: "/products" },
-  { label: "Artikel", href: "/article" },
+  // "Artikel" (/article) ditambahkan lagi setelah fitur artikel di backend selesai.
 ];

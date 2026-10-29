@@ -19,6 +19,8 @@ const dateFormatter = new Intl.DateTimeFormat("id-ID", {
   day: "numeric",
   month: "long",
   year: "numeric",
+  // Server Vercel memakai UTC; tanpa ini tanggal bisa mundur satu hari.
+  timeZone: "Asia/Jakarta",
 });
 
 /** Mengubah string tanggal ISO menjadi "28 Oktober 2026". Mengembalikan "" jika tidak valid. */

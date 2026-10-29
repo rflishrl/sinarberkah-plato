@@ -8,13 +8,13 @@ The products, projects, and patterns come from a separate project, `sinarberkah-
 
 ## Pages
 
-| Path         | What it shows                                                                                                           |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| `/`          | Home page: hero slider, about, services, delivery banner, portfolio, pattern gallery, promo, materials, contact and map |
-| `/products`  | Product list with search and a WhatsApp link on each product                                                            |
-| `/portfolio` | Projects the workshop has built                                                                                         |
-| `/gallery`   | Pattern gallery                                                                                                         |
-| `/article`   | Articles. The backend has no article feature yet, so this page shows an empty message                                   |
+| Path         | What it shows                                                                                                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`          | Home page: hero slider, about, services, delivery banner, portfolio, pattern gallery, promo, materials, contact and map                                                         |
+| `/products`  | Product list with search and a WhatsApp link on each product                                                                                                                    |
+| `/portfolio` | Projects the workshop has built                                                                                                                                                 |
+| `/gallery`   | Pattern gallery                                                                                                                                                                 |
+| `/article`   | Articles. The backend has no article feature yet, so this page shows an empty message. It is left out of the menu and the sitemap, and search engines are asked not to index it |
 
 Old addresses `/cart` and `/produk` redirect to `/products`.
 
@@ -65,11 +65,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### Environment variables
 
-| Variable               | Purpose                                                                                                                                                                 |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `API_BASE_URL`         | Backend address without a trailing slash. In development it defaults to `http://localhost:4000`. In production it defaults to `https://sinarberkah-backend.vercel.app`. |
-| `REVALIDATE_SECRET`    | Secret for `POST /api/revalidate`, the same value as in the backend. Leave empty to turn the endpoint off.                                                              |
-| `NEXT_PUBLIC_SITE_URL` | Public address of this site. Used for the sitemap, `robots.txt`, and page metadata                                                                                      |
+| Variable               | Purpose                                                                                                                                                                      |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `API_BASE_URL`         | Backend address without a trailing slash. In development it defaults to `http://localhost:4000`. In production it is required: the build stops with an error if it is empty. |
+| `REVALIDATE_SECRET`    | Secret for `POST /api/revalidate`, the same value as in the backend. Leave empty to turn the endpoint off.                                                                   |
+| `NEXT_PUBLIC_SITE_URL` | Public address of this site. Used for the sitemap, `robots.txt`, and page metadata                                                                                           |
 
 Restart `npm run dev` after you change `.env.local`.
 
@@ -84,6 +84,12 @@ Restart `npm run dev` after you change `.env.local`.
 | `npm run typecheck` | Checks TypeScript types        |
 | `npm test`          | Runs the tests (Vitest)        |
 | `npm run format`    | Formats the code with Prettier |
+
+The API types in `src/types/api.ts` are written separately from the backend's. A contract test checks that the real backend still matches them. It runs only when `CONTRACT_API_URL` is set, and it needs at least one item of each kind in the backend:
+
+```powershell
+$env:CONTRACT_API_URL="http://localhost:4000"; npm test
+```
 
 ## Design
 

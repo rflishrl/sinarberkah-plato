@@ -42,10 +42,6 @@ export type Article = z.infer<typeof articleSchema>;
 /** Produk dari API backend (`GET /api/products/v1`). */
 export type Product = z.infer<typeof productSchema>;
 
-export interface ApiListResponse<T> {
-  data: T[];
-}
-
 export interface HeroSlide {
   id: string;
   title: string;

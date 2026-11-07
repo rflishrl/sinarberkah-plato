@@ -9,13 +9,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fromRoot("./src"),
-      // `server-only` sengaja melempar error di luar React Server Components.
-      // Di pengujian (Node biasa) diganti modul kosong.
-      "server-only": fromRoot("./test/empty-module.ts"),
     },
   },
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts"],
+    include: ["src/**/*.test.ts", "test/**/*.test.ts"],
   },
 });

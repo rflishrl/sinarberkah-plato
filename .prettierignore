@@ -1,4 +1,11 @@
 .next
+.output
+.vercel
+dist
 node_modules
 package-lock.json
+bun.lock
 public
+.agents
+.agent
+src/routeTree.gen.ts

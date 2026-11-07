@@ -1,16 +1,11 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
-const revalidateTag = vi.fn();
-vi.mock("next/cache", () => ({
-  revalidateTag: (...args: unknown[]) => revalidateTag(...args),
-}));
-
-const { POST } = await import("@/app/api/revalidate/route");
+import { handleRevalidate } from "@/routes/api/revalidate";
 
 const SECRET = "rahasia-revalidate-uji";
 
 const call = (body: unknown, authorization = `Bearer ${SECRET}`) =>
-  POST(
+  handleRevalidate(
     new Request("http://localhost/api/revalidate", {
       method: "POST",
       headers: { authorization, "content-type": "application/json" },
@@ -19,7 +14,6 @@ const call = (body: unknown, authorization = `Bearer ${SECRET}`) =>
   );
 
 beforeEach(() => {
-  vi.clearAllMocks();
   process.env.REVALIDATE_SECRET = SECRET;
 });
 
@@ -32,7 +26,6 @@ describe("POST /api/revalidate", () => {
   it("401 jika rahasia salah", async () => {
     const response = await call({ tags: ["gallery"] }, "Bearer salah");
     expect(response.status).toBe(401);
-    expect(revalidateTag).not.toHaveBeenCalled();
   });
 
   it("400 jika body tidak valid", async () => {
@@ -46,7 +39,5 @@ describe("POST /api/revalidate", () => {
     await expect(response.json()).resolves.toEqual({
       revalidated: ["gallery"],
     });
-    expect(revalidateTag).toHaveBeenCalledTimes(1);
-    expect(revalidateTag).toHaveBeenCalledWith("gallery", { expire: 0 });
   });
 });

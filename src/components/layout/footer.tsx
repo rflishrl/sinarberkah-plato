@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 import { FaWhatsapp } from "react-icons/fa6";
 
 import { CurrentYear } from "@/components/ui/current-year";
@@ -26,7 +26,7 @@ export function Footer() {
             {footerLinks.map((link) => (
               <li key={link.href}>
                 <Link
-                  href={link.href}
+                  to={link.href}
                   className="inline-flex min-h-10 items-center text-muted transition-colors duration-200 hover:text-brand motion-reduce:transition-none"
                 >
                   {link.label}

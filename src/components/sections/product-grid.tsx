@@ -10,9 +10,26 @@ import { formatRupiah } from "@/lib/utils";
 import { whatsappLink } from "@/lib/whatsapp";
 import type { Product } from "@/types/api";
 
-export function ProductGrid({ products }: { products: Product[] }) {
+export function ProductGrid({
+  products,
+  query: controlledQuery,
+  onQueryChange,
+}: {
+  products: Product[];
+  query?: string;
+  onQueryChange?: (value: string) => void;
+}) {
   const inputId = useId();
-  const [query, setQuery] = useState("");
+  const [internalQuery, setInternalQuery] = useState("");
+  const isControlled = controlledQuery !== undefined;
+  const query = isControlled ? controlledQuery : internalQuery;
+
+  const handleQueryChange = (value: string) => {
+    if (!isControlled) {
+      setInternalQuery(value);
+    }
+    onQueryChange?.(value);
+  };
 
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -40,7 +57,7 @@ export function ProductGrid({ products }: { products: Product[] }) {
             id={inputId}
             type="search"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => handleQueryChange(event.target.value)}
             placeholder="Cari produk"
             className="min-h-11 w-full rounded-xs border border-muted bg-white py-2 pr-3 pl-10 text-base"
           />

@@ -1,5 +1,3 @@
-import "server-only";
-
 import { z } from "zod";
 
 import {
@@ -19,11 +17,7 @@ import {
  * Aturan yang dipegang file ini:
  * - Respons diperiksa bentuknya dengan Zod. Item yang rusak dibuang dan dicatat di log.
  * - Gagal dimuat (jaringan, timeout, 5xx) dicoba ulang sekali, lalu melempar `ApiError`.
- *   Halaman statis yang gagal dibuat ulang (revalidate) tetap menampilkan versi terakhir yang baik,
- *   jadi gangguan sesaat tidak tersimpan sebagai halaman kosong atau data cadangan.
  * - "Belum ada data" (`[]`) berbeda dengan "gagal dimuat" (melempar error).
- * - Setiap permintaan diberi tag cache. Backend memanggil `/api/revalidate` setelah admin
- *   menyimpan data, jadi perubahan tampil langsung. `REVALIDATE_SECONDS` hanya jaring pengaman.
  */
 
 /**
@@ -51,7 +45,6 @@ export const CACHE_TAGS = {
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];
 
-const REVALIDATE_SECONDS = 60 * 60;
 const REQUEST_TIMEOUT_MS = 6_000;
 const MAX_ATTEMPTS = 2;
 const RETRY_DELAY_MS = 500;
@@ -102,14 +95,13 @@ function readEnvelope(
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function requestJson(path: string, tag: CacheTag): Promise<unknown> {
+async function requestJson(path: string, _tag: CacheTag): Promise<unknown> {
   const baseUrl = getApiBaseUrl();
   let lastError: unknown;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       const response = await fetch(`${baseUrl}${path}`, {
-        next: { revalidate: REVALIDATE_SECONDS, tags: [tag] },
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       });
 

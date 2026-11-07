@@ -1,6 +1,3 @@
-"use client";
-
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { ContentImage } from "@/components/ui/content-image";
@@ -72,7 +69,7 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
         onBlur={() => setInteracting(false)}
         tabIndex={0}
         aria-live={isPlaying ? "off" : "polite"}
-        className="mx-auto flex w-full max-w-[695px] snap-x snap-mandatory overscroll-x-contain [scrollbar-width:none] overflow-x-auto [&::-webkit-scrollbar]:hidden"
+        className="mx-auto flex w-full max-w-[695px] snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overscroll-x-contain [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide, i) => (
           <div
@@ -83,11 +80,13 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
             className="w-full shrink-0 snap-center"
           >
             {slide.kind === "strip" ? (
-              <Image
+              <img
                 src={slide.src}
                 alt={slide.alt}
                 width={1116}
                 height={446}
+                loading="lazy"
+                decoding="async"
                 sizes="(min-width: 768px) 695px, 100vw"
                 className="h-auto w-full"
               />

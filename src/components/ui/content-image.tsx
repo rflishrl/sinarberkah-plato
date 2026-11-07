@@ -1,39 +1,43 @@
-import Image from "next/image";
+import type { ComponentProps } from "react";
 
-import { isOptimizableImage } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
-interface ContentImageProps {
+interface ContentImageProps extends Omit<
+  ComponentProps<"img">,
+  "src" | "alt" | "sizes"
+> {
   src: string;
   alt: string;
-  sizes: string;
+  sizes?: string;
   className?: string;
   preload?: boolean;
 }
 
 /**
- * Gambar yang mengisi parent (parent harus `relative` dan punya ukuran).
+ * Komponen gambar pengganti next/image yang mengisi elemen pembungkus (parent).
+ * Parent harus memiliki posisi `relative` dan rasio/ukuran pasti.
  *
- * Gambar dari /public dan dari Vercel Blob (foto yang diunggah lewat backend) dioptimasi
- * Next.js. Gambar dari host lain dimuat apa adanya (`unoptimized`); daftarkan host-nya
- * di `images.remotePatterns` pada next.config.ts lalu tambahkan ke `isOptimizableImage`.
+ * Menggunakan `fetchPriority="high"` dan `loading="eager"` jika `preload` aktif (mis. LCP hero slide),
+ * serta `loading="lazy"` dan `decoding="async"` untuk gambar di bawah fold.
  */
 export function ContentImage({
   src,
   alt,
   sizes,
   className,
-  preload,
+  preload = false,
+  ...props
 }: ContentImageProps) {
   return (
-    <Image
+    <img
       src={src}
       alt={alt}
-      fill
       sizes={sizes}
-      priority={preload}
-      preload={preload}
-      unoptimized={!isOptimizableImage(src)}
-      className={className}
+      loading={preload ? "eager" : "lazy"}
+      decoding="async"
+      fetchPriority={preload ? "high" : "auto"}
+      className={cn("absolute inset-0 size-full", className)}
+      {...props}
     />
   );
 }

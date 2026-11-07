@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
@@ -28,7 +28,7 @@ interface ButtonLinkProps extends Omit<
 }
 
 /**
- * Tautan bergaya tombol. Tautan internal memakai `next/link`,
+ * Tautan bergaya tombol. Tautan internal memakai TanStack Router `Link`,
  * tautan eksternal dibuka di tab baru dengan `rel` yang aman.
  */
 export function ButtonLink({
@@ -68,7 +68,7 @@ export function ButtonLink({
   }
 
   return (
-    <Link href={href} className={styles} {...props}>
+    <Link to={href} className={styles} {...(props as Record<string, unknown>)}>
       {children}
     </Link>
   );

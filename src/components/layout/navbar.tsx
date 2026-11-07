@@ -1,7 +1,4 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import { MdClose, MdMenu } from "react-icons/md";
 
@@ -19,7 +16,8 @@ const isScrolled = () => window.scrollY > 8;
 const isScrolledOnServer = () => false;
 
 export function Navbar() {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
   const menuId = useId();
   const [openPath, setOpenPath] = useState<string | null>(null);
   // Menu otomatis menutup saat berpindah halaman, tanpa perlu effect tambahan.
@@ -55,7 +53,7 @@ export function Navbar() {
     >
       <div className="container-page flex h-16 items-center gap-6 lg:h-[86px] lg:gap-0">
         <Link
-          href="/"
+          to="/"
           className="font-sans text-xl font-extrabold text-ink uppercase sm:text-2xl"
         >
           {siteConfig.name}
@@ -133,7 +131,7 @@ function NavItem({
 }) {
   return (
     <Link
-      href={href}
+      to={href}
       aria-current={active ? "page" : undefined}
       className={cn(
         "text-base font-medium transition-colors duration-200 motion-reduce:transition-none",

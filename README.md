@@ -10,11 +10,12 @@ Content for products, portfolio items, and ornamental patterns is managed throug
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router) with Turbopack
+- **Framework**: TanStack Start with Vite & Nitro (SSR, Server Functions & Streaming)
+- **Router**: TanStack Router (100% type-safe file-based routing)
 - **Runtime & Package Manager**: Bun 1.4+
 - **UI Library**: React 19
-- **Styling**: Tailwind CSS 4 (via `@tailwindcss/postcss`)
-- **Typography**: `next/font/google` (Mulish for headings, Open Sans for body)
+- **Styling**: Tailwind CSS 4 (via `@tailwindcss/vite`)
+- **Typography**: `@fontsource-variable/mulish` and `@fontsource-variable/open-sans` (self-hosted variable fonts)
 - **Language**: TypeScript 5.9 (Strict mode)
 - **Testing**: Vitest 5
 - **Icons**: React Icons (Material Design & FontAwesome)
@@ -55,16 +56,16 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## Available Commands
 
-| Command | Action |
-| --- | --- |
-| `bun dev` | Starts the local development server |
-| `bun run build` | Builds the production bundle using Turbopack |
-| `bun run start` | Runs the compiled production server |
-| `bun run lint` | Checks code formatting and syntax using ESLint 9 |
-| `bun run typecheck` | Validates TypeScript types with `tsc --noEmit` |
-| `bun test` | Executes unit and API validation tests with Vitest |
-| `bun run format` | Formats files with Prettier |
-| `bun run format:check` | Verifies code adherence to Prettier guidelines |
+| Command                | Action                                             |
+| ---------------------- | -------------------------------------------------- |
+| `bun dev`              | Starts the local Vite development server           |
+| `bun run build`        | Builds the production bundle with Vite & Nitro     |
+| `bun run start`        | Runs the compiled production server                |
+| `bun run lint`         | Checks code syntax and TanStack Router rules       |
+| `bun run typecheck`    | Validates TypeScript types with `tsc --noEmit`     |
+| `bun test`             | Executes unit and API validation tests with Vitest |
+| `bun run format`       | Formats files with Prettier                        |
+| `bun run format:check` | Verifies code adherence to Prettier guidelines     |
 
 ### API Contract Testing
 
@@ -82,25 +83,25 @@ CONTRACT_API_URL="http://localhost:4000" bun test
 
 ## Environment Variables
 
-| Variable | Description | Requirement |
-| --- | --- | --- |
-| `API_BASE_URL` | Base URL of the backend API without a trailing slash (e.g. `http://localhost:4000` or production URL) | Required in production |
-| `REVALIDATE_SECRET` | Secret key matching the backend for on-demand revalidation at `POST /api/revalidate` | Optional (Required for instant cache purge) |
-| `NEXT_PUBLIC_SITE_URL` | Public site domain used for canonical alternates, `sitemap.xml`, and `robots.txt` | Recommended |
+| Variable               | Description                                                                                           | Requirement                                 |
+| ---------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `API_BASE_URL`         | Base URL of the backend API without a trailing slash (e.g. `http://localhost:4000` or production URL) | Required in production                      |
+| `REVALIDATE_SECRET`    | Secret key matching the backend for on-demand revalidation at `POST /api/revalidate`                  | Optional (Required for instant cache purge) |
+| `NEXT_PUBLIC_SITE_URL` | Public site domain used for canonical alternates, `sitemap.xml`, and `robots.txt`                     | Recommended                                 |
 
 ---
 
 ## Site Pages & Routes
 
-| Path | Description |
-| --- | --- |
-| `/` | Landing page: hero slider, about, services, delivery guarantees, portfolio carousel, pattern gallery, materials, and Google Maps contact section |
-| `/products` | Product catalog with live search and direct WhatsApp ordering links |
-| `/portfolio` | Visual archive of fabricated custom iron and metal projects |
-| `/gallery` | Ornamental pattern gallery with categories |
-| `/article` | Articles and publications view (reserved for future updates) |
-| `/robots.txt` | Search engine crawler rules |
-| `/sitemap.xml` | Generated sitemap for indexing |
+| Path           | Description                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/`            | Landing page: hero slider, about, services, delivery guarantees, portfolio carousel, pattern gallery, materials, and Google Maps contact section |
+| `/products`    | Product catalog with live search and direct WhatsApp ordering links                                                                              |
+| `/portfolio`   | Visual archive of fabricated custom iron and metal projects                                                                                      |
+| `/gallery`     | Ornamental pattern gallery with categories                                                                                                       |
+| `/article`     | Articles and publications view (reserved for future updates)                                                                                     |
+| `/robots.txt`  | Search engine crawler rules                                                                                                                      |
+| `/sitemap.xml` | Generated sitemap for indexing                                                                                                                   |
 
 Legacy routes `/cart` and `/produk` automatically issue permanent redirects (308) to `/products`.
 
@@ -132,13 +133,14 @@ Legacy routes `/cart` and `/produk` automatically issue permanent redirects (308
 
 ```
 src/
-  app/          Next.js App Router pages, layout, error boundaries, robots, and sitemap
   components/
     layout/     Responsive navigation bar and site footer
     sections/   Hero slider, about, services, materials, pattern gallery, and contact map
     ui/         ButtonLink, ContentImage, PageHeader, SectionHeading, and JsonLd schema
   data/         Static copy, WhatsApp configuration, and service definitions
   lib/          API client, metadata utilities, and WhatsApp URL builders
+  routes/       TanStack Router type-safe file-based routes and server functions
+  styles/       Global CSS and self-hosted variable font declarations
   types/        TypeScript interfaces for API payloads and frontend components
 public/
   images/       Optimized static banners, hero photography, and material swatches

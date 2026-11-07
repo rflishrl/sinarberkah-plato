@@ -1,21 +1,26 @@
-import type { Metadata } from "next";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { ContentImage } from "@/components/ui/content-image";
 import { EmptyState, PageHeader } from "@/components/ui/page-header";
-import { getArticles } from "@/lib/api";
+import { buildHeadMeta } from "@/lib/metadata";
+import { getArticlesServerFn } from "@/lib/server-fns";
 import { formatDate } from "@/lib/utils";
 
-export const revalidate = 3600;
+export const Route = createFileRoute("/article")({
+  loader: () => getArticlesServerFn(),
+  head: () =>
+    buildHeadMeta({
+      title: "Artikel",
+      description:
+        "Artikel dan informasi seputar ornamen, plat dan konstruksi.",
+      path: "/article",
+      noIndex: true,
+    }),
+  component: ArticlePage,
+});
 
-export const metadata: Metadata = {
-  title: "Artikel",
-  description: "Artikel dan informasi seputar ornamen, plat dan konstruksi.",
-  // Belum diindeks mesin pencari selama fitur artikel di backend belum ada.
-  robots: { index: false, follow: true },
-};
-
-export default async function ArticlePage() {
-  const articles = await getArticles();
+function ArticlePage() {
+  const articles = Route.useLoaderData();
 
   return (
     <>

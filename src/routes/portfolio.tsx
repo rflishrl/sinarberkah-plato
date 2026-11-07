@@ -1,21 +1,24 @@
-import type { Metadata } from "next";
+import { createFileRoute } from "@tanstack/react-router";
 
-import { EmptyState, PageHeader } from "@/components/ui/page-header";
 import { ContentImage } from "@/components/ui/content-image";
-import { getPortfolio } from "@/lib/api";
-import { pageMetadata } from "@/lib/metadata";
+import { EmptyState, PageHeader } from "@/components/ui/page-header";
+import { buildHeadMeta } from "@/lib/metadata";
+import { getPortfolioServerFn } from "@/lib/server-fns";
 
-export const revalidate = 3600;
-
-export const metadata: Metadata = pageMetadata({
-  title: "Portofolio",
-  description:
-    "Proyek ornamen, railing, pagar dan sketsel yang pernah dikerjakan Sinar Berkah.",
-  path: "/portfolio",
+export const Route = createFileRoute("/portfolio")({
+  loader: () => getPortfolioServerFn(),
+  head: () =>
+    buildHeadMeta({
+      title: "Portofolio",
+      description:
+        "Proyek ornamen, railing, pagar dan sketsel yang pernah dikerjakan Sinar Berkah.",
+      path: "/portfolio",
+    }),
+  component: PortfolioPage,
 });
 
-export default async function PortfolioPage() {
-  const items = await getPortfolio();
+function PortfolioPage() {
+  const items = Route.useLoaderData();
 
   return (
     <>

@@ -1,27 +1,30 @@
-import type { Metadata } from "next";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { ContentImage } from "@/components/ui/content-image";
 import { EmptyState, PageHeader } from "@/components/ui/page-header";
-import { getGallery } from "@/lib/api";
-import { pageMetadata } from "@/lib/metadata";
+import { buildHeadMeta } from "@/lib/metadata";
+import { getGalleryServerFn } from "@/lib/server-fns";
 
-export const revalidate = 3600;
-
-export const metadata: Metadata = pageMetadata({
-  title: "Galeri Pola",
-  description:
-    "Koleksi pola ornamen Sinar Berkah. Tersedia pola jadi maupun pola custom sesuai kebutuhan Anda.",
-  path: "/gallery",
-  image: {
-    url: "/images/pattern-gallery.png",
-    width: 1116,
-    height: 446,
-    alt: "Lima contoh pola ornamen Sinar Berkah",
-  },
+export const Route = createFileRoute("/gallery")({
+  loader: () => getGalleryServerFn(),
+  head: () =>
+    buildHeadMeta({
+      title: "Galeri Pola",
+      description:
+        "Koleksi pola ornamen Sinar Berkah. Tersedia pola jadi maupun pola custom sesuai kebutuhan Anda.",
+      path: "/gallery",
+      image: {
+        url: "/images/pattern-gallery.png",
+        width: 1116,
+        height: 446,
+        alt: "Lima contoh pola ornamen Sinar Berkah",
+      },
+    }),
+  component: GalleryPage,
 });
 
-export default async function GalleryPage() {
-  const items = await getGallery();
+function GalleryPage() {
+  const items = Route.useLoaderData();
 
   return (
     <>

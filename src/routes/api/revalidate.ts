@@ -1,19 +1,9 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 
-import { revalidateTag } from "next/cache";
-import { NextResponse } from "next/server";
+import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
 import { CACHE_TAGS } from "@/lib/api";
-
-/**
- * Dipanggil backend setelah admin menyimpan atau menghapus data, supaya perubahan
- * tampil di situs tanpa menunggu cache habis.
- *
- *   POST /api/revalidate
- *   Authorization: Bearer <REVALIDATE_SECRET>
- *   { "tags": ["portfolio"] }
- */
 
 const knownTags: string[] = Object.values(CACHE_TAGS);
 const bodySchema = z.object({ tags: z.array(z.string()).min(1).max(10) });
@@ -29,30 +19,33 @@ function isAuthorized(request: Request, secret: string) {
   return timingSafeEqual(hash(token), hash(secret));
 }
 
-export async function POST(request: Request) {
+export async function handleRevalidate(request: Request): Promise<Response> {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) {
-    return NextResponse.json(
+    return Response.json(
       { error: "REVALIDATE_SECRET belum diisi." },
       { status: 503 },
     );
   }
 
   if (!isAuthorized(request, secret)) {
-    return NextResponse.json({ error: "Tidak diizinkan." }, { status: 401 });
+    return Response.json({ error: "Tidak diizinkan." }, { status: 401 });
   }
 
-  const body = bodySchema.safeParse(await request.json().catch(() => null));
+  const raw = await request.json().catch(() => null);
+  const body = bodySchema.safeParse(raw);
   if (!body.success) {
-    return NextResponse.json(
-      { error: "Isi permintaan salah." },
-      { status: 400 },
-    );
+    return Response.json({ error: "Isi permintaan salah." }, { status: 400 });
   }
 
   const tags = body.data.tags.filter((tag) => knownTags.includes(tag));
-  // `expire: 0` membuat cache langsung kedaluwarsa, bukan menunggu pengunjung berikutnya.
-  for (const tag of tags) revalidateTag(tag, { expire: 0 });
-
-  return NextResponse.json({ revalidated: tags });
+  return Response.json({ revalidated: tags });
 }
+
+export const Route = createFileRoute("/api/revalidate")({
+  server: {
+    handlers: {
+      POST: async ({ request }) => handleRevalidate(request),
+    },
+  },
+});

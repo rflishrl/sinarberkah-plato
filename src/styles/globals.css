@@ -137,7 +137,9 @@
   }
 }
 
-@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 64rem) and (hover: hover) and (
+    prefers-reduced-motion: no-preference
+  ) {
   .marquee-viewport {
     overflow: hidden;
   }
@@ -156,7 +158,9 @@
 }
 
 /* Titik penanda hanya untuk baris yang digeser manual (mobile dan tablet): portofolio dan galeri pola. */
-@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 64rem) and (hover: hover) and (
+    prefers-reduced-motion: no-preference
+  ) {
   .marquee-dots {
     display: none;
   }

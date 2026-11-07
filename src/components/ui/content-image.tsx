@@ -2,10 +2,8 @@ import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
-interface ContentImageProps extends Omit<
-  ComponentProps<"img">,
-  "src" | "alt" | "sizes"
-> {
+interface ContentImageProps
+  extends Omit<ComponentProps<"img">, "src" | "alt" | "sizes"> {
   src: string;
   alt: string;
   sizes?: string;

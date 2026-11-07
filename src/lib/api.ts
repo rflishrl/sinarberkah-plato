@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 import {
+  type Article,
   articleSchema,
+  type GalleryItem,
   galleryItemSchema,
   listResponseSchema,
-  productSchema,
-  type Article,
-  type GalleryItem,
   type PortfolioItem,
   type Product,
+  productSchema,
 } from "@/types/api";
 
 /*

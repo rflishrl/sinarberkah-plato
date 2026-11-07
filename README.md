@@ -16,6 +16,7 @@ Content for products, portfolio items, and ornamental patterns is managed throug
 - **UI Library**: React 19
 - **Styling**: Tailwind CSS 4 (via `@tailwindcss/vite`)
 - **Typography**: `@fontsource-variable/mulish` and `@fontsource-variable/open-sans` (self-hosted variable fonts)
+- **Linter & Formatter**: Biome 2.6
 - **Language**: TypeScript 5.9 (Strict mode)
 - **Testing**: Vitest 5
 - **Icons**: React Icons (Material Design & FontAwesome)
@@ -61,11 +62,12 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 | `bun dev`              | Starts the local Vite development server           |
 | `bun run build`        | Builds the production bundle with Vite & Nitro     |
 | `bun run start`        | Runs the compiled production server                |
-| `bun run lint`         | Checks code syntax and TanStack Router rules       |
+| `bun run lint`         | Lints code and TanStack Router rules with Biome    |
 | `bun run typecheck`    | Validates TypeScript types with `tsc --noEmit`     |
 | `bun test`             | Executes unit and API validation tests with Vitest |
-| `bun run format`       | Formats files with Prettier                        |
-| `bun run format:check` | Verifies code adherence to Prettier guidelines     |
+| `bun run format`       | Formats files with Biome                           |
+| `bun run format:check` | Verifies code adherence to Biome formatting        |
+| `bun run check`        | Lints, formats, and organizes imports with Biome   |
 
 ### API Contract Testing
 

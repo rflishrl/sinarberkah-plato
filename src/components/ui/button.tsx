@@ -18,10 +18,8 @@ export function buttonStyles(variant: Variant = "primary", className?: string) {
   return cn(base, variants[variant], className);
 }
 
-interface ButtonLinkProps extends Omit<
-  ComponentProps<"a">,
-  "href" | "className"
-> {
+interface ButtonLinkProps
+  extends Omit<ComponentProps<"a">, "href" | "className"> {
   href: string;
   variant?: Variant;
   className?: string;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 import { ContentImage } from "@/components/ui/content-image";
 import { cn } from "@/lib/utils";
@@ -136,26 +137,50 @@ export function PortfolioRow({ items }: { items: PortfolioItem[] }) {
       </div>
 
       {items.length > 1 && canScroll && (
-        <div className="marquee-dots mt-2 flex flex-wrap items-center justify-center">
-          {items.map((item, i) => (
-            <button
-              key={item._id}
-              type="button"
-              onClick={() => scrollToCard(i)}
-              aria-label={`Tampilkan proyek ${i + 1}`}
-              aria-current={i === activeIndex}
-              className="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center p-2"
-            >
-              <span
-                className={cn(
-                  "size-2.5 rounded-full transition-colors duration-200 motion-reduce:transition-none",
-                  i === activeIndex
-                    ? "bg-brand"
-                    : "bg-line group-hover:bg-muted/50",
-                )}
-              />
-            </button>
-          ))}
+        <div className="marquee-dots mt-3 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => scrollToCard(Math.max(activeIndex - 1, 0))}
+            disabled={activeIndex === 0}
+            aria-label="Proyek sebelumnya"
+            className="hidden size-8 cursor-pointer items-center justify-center rounded-full border border-line bg-white text-ink shadow-xs transition-colors hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 lg:inline-flex"
+          >
+            <MdChevronLeft size={20} aria-hidden="true" />
+          </button>
+
+          <div className="flex flex-wrap items-center justify-center">
+            {items.map((item, i) => (
+              <button
+                key={item._id}
+                type="button"
+                onClick={() => scrollToCard(i)}
+                aria-label={`Tampilkan proyek ${i + 1}`}
+                aria-current={i === activeIndex}
+                className="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center p-2"
+              >
+                <span
+                  className={cn(
+                    "size-2.5 rounded-full transition-colors duration-200 motion-reduce:transition-none",
+                    i === activeIndex
+                      ? "bg-brand"
+                      : "bg-line group-hover:bg-muted/50",
+                  )}
+                />
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              scrollToCard(Math.min(activeIndex + 1, items.length - 1))
+            }
+            disabled={activeIndex === items.length - 1}
+            aria-label="Proyek berikutnya"
+            className="hidden size-8 cursor-pointer items-center justify-center rounded-full border border-line bg-white text-ink shadow-xs transition-colors hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 lg:inline-flex"
+          >
+            <MdChevronRight size={20} aria-hidden="true" />
+          </button>
         </div>
       )}
     </div>

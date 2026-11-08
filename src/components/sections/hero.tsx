@@ -75,7 +75,7 @@ export function Hero({ slides }: { slides: HeroSlide[] }) {
           <h1 className="font-heading text-4xl leading-[1.25] font-extrabold text-balance text-ink sm:text-5xl lg:text-[clamp(2.25rem,3.75vw,3rem)]">
             {slide.title}
           </h1>
-          <p className="mt-[17px] text-base leading-[22px] font-medium text-muted lg:text-justify">
+          <p className="mt-[17px] text-base leading-[22px] font-medium text-pretty text-muted">
             {slide.description}
           </p>
           <ButtonLink href={slide.ctaHref} className="mt-8 lg:mt-12">

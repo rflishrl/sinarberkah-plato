@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 import { ContentImage } from "@/components/ui/content-image";
 import { useMediaQuery } from "@/lib/use-media-query";
@@ -62,46 +63,69 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
       onMouseEnter={() => setInteracting(true)}
       onMouseLeave={() => setInteracting(false)}
     >
-      <div
-        ref={trackRef}
-        onScroll={handleScroll}
-        onFocus={() => setInteracting(true)}
-        onBlur={() => setInteracting(false)}
-        tabIndex={0}
-        aria-live={isPlaying ? "off" : "polite"}
-        className="mx-auto flex w-full max-w-[695px] snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overscroll-x-contain [&::-webkit-scrollbar]:hidden"
-      >
-        {slides.map((slide, i) => (
-          <div
-            key={slide.id}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} dari ${total}`}
-            className="w-full shrink-0 snap-center"
-          >
-            {slide.kind === "strip" ? (
-              <img
-                src={slide.src}
-                alt={slide.alt}
-                width={1116}
-                height={446}
-                loading="lazy"
-                decoding="async"
-                sizes="(min-width: 768px) 695px, 100vw"
-                className="h-auto w-full"
-              />
-            ) : (
-              <div className="relative mx-auto h-[220px] w-full bg-white sm:h-[360px] lg:h-[440px]">
-                <ContentImage
+      <div className="relative mx-auto max-w-[695px]">
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => scrollToSlide((index - 1 + total) % total)}
+              aria-label="Slide pola sebelumnya"
+              className="absolute -left-12 top-1/2 z-10 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white text-ink shadow-xs transition-colors hover:text-brand hover:shadow-card lg:flex"
+            >
+              <MdChevronLeft size={24} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSlide((index + 1) % total)}
+              aria-label="Slide pola berikutnya"
+              className="absolute -right-12 top-1/2 z-10 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white text-ink shadow-xs transition-colors hover:text-brand hover:shadow-card lg:flex"
+            >
+              <MdChevronRight size={24} aria-hidden="true" />
+            </button>
+          </>
+        )}
+
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          onFocus={() => setInteracting(true)}
+          onBlur={() => setInteracting(false)}
+          tabIndex={0}
+          aria-live={isPlaying ? "off" : "polite"}
+          className="flex w-full snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overscroll-x-contain [&::-webkit-scrollbar]:hidden"
+        >
+          {slides.map((slide, i) => (
+            <div
+              key={slide.id}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} dari ${total}`}
+              className="w-full shrink-0 snap-center"
+            >
+              {slide.kind === "strip" ? (
+                <img
                   src={slide.src}
                   alt={slide.alt}
+                  width={1116}
+                  height={446}
+                  loading="lazy"
+                  decoding="async"
                   sizes="(min-width: 768px) 695px, 100vw"
-                  className="object-contain"
+                  className="h-auto w-full"
                 />
-              </div>
-            )}
-          </div>
-        ))}
+              ) : (
+                <div className="relative mx-auto h-[220px] w-full bg-white sm:h-[360px] lg:h-[440px]">
+                  <ContentImage
+                    src={slide.src}
+                    alt={slide.alt}
+                    sizes="(min-width: 768px) 695px, 100vw"
+                    className="object-contain"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="relative mx-auto mt-3 flex w-full max-w-[695px] flex-wrap items-center justify-center">

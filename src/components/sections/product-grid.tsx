@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa6";
 import { MdSearch } from "react-icons/md";
 
 import { ContentImage } from "@/components/ui/content-image";
@@ -69,46 +70,56 @@ export function ProductGrid({
       ) : (
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {visible.map((product) => (
-            <li key={product._id} className="flex flex-col">
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-line">
-                {product.image.image_url ? (
-                  <ContentImage
-                    src={product.image.image_url}
-                    alt={product.name}
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex size-full items-center justify-center text-sm text-muted">
-                    Tanpa foto
-                  </div>
+            <li
+              key={product._id}
+              className="group flex flex-col justify-between rounded-xs border border-line bg-white p-4 shadow-xs transition-shadow duration-200 hover:shadow-card"
+            >
+              <div>
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xs bg-line">
+                  {product.image.image_url ? (
+                    <ContentImage
+                      src={product.image.image_url}
+                      alt={product.name}
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
+                    />
+                  ) : (
+                    <div className="flex size-full items-center justify-center text-sm text-muted">
+                      Tanpa foto
+                    </div>
+                  )}
+                </div>
+                {product.category && (
+                  <p className="mt-3 text-xs font-semibold tracking-wider text-muted uppercase">
+                    {product.category}
+                  </p>
+                )}
+                <h2 className="mt-1 font-heading text-lg font-bold text-ink">
+                  {product.name}
+                </h2>
+                <p className="mt-1 text-base font-bold text-brand">
+                  {formatRupiah(product.price)}
+                </p>
+                {product.description && (
+                  <p className="mt-1 line-clamp-2 text-sm text-muted">
+                    {product.description}
+                  </p>
                 )}
               </div>
-              {product.category && (
-                <p className="mt-3 text-xs tracking-wider text-muted uppercase">
-                  {product.category}
-                </p>
-              )}
-              <h2 className="font-heading text-lg font-bold">{product.name}</h2>
-              <p className="mt-1 font-semibold">
-                {formatRupiah(product.price)}
-              </p>
-              {product.description && (
-                <p className="mt-1 line-clamp-2 text-sm text-muted">
-                  {product.description}
-                </p>
-              )}
-              <a
-                href={whatsappLink(
-                  siteConfig.contact.whatsappOrder,
-                  `Halo, saya tertarik dengan produk ${product.name}.`,
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-flex min-h-11 items-center self-start text-sm font-semibold text-brand hover:text-brand-hover"
-              >
-                Tanya via WhatsApp
-              </a>
+              <div className="mt-4 pt-2">
+                <a
+                  href={whatsappLink(
+                    siteConfig.contact.whatsappOrder,
+                    `Halo, saya tertarik dengan produk ${product.name}.`,
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xs bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white shadow-xs transition-colors duration-200 hover:bg-[#20ba5a] motion-reduce:transition-none"
+                >
+                  <FaWhatsapp size={18} aria-hidden="true" />
+                  <span>Tanya via WhatsApp</span>
+                </a>
+              </div>
             </li>
           ))}
         </ul>

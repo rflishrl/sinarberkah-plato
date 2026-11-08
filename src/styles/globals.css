@@ -3,15 +3,14 @@
 @import "@fontsource-variable/open-sans";
 
 /*
- * Design tokens, diambil dari Figma "PLATO Landing Page" (Version 2).
+ * Design tokens, diadaptasi dari Figma "PLATO Landing Page" (Version 2).
  *
- * - `brand` (#FF7062) adalah "main-orange" dari Figma, dipakai persis untuk tombol dan label.
- *   Catatan: kontras #FF7062 terhadap putih hanya 2.8:1 (di bawah WCAG AA 4.5:1).
+ * - `brand` (#d94435) rona terakota/coral dengan rasio kontras ramah aksesibilitas WCAG AA.
  * - `muted` sedikit lebih gelap dari abu-abu Figma (#777) yang kontrasnya 4.48:1.
  */
 @theme {
-  --color-brand: #ff7062;
-  --color-brand-hover: #e85a4c;
+  --color-brand: #d94435;
+  --color-brand-hover: #be3527;
   --color-accent: #55acee;
   --color-ink: #222222;
   --color-muted: #6b6b6b;

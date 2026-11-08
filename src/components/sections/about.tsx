@@ -64,22 +64,15 @@ export function About() {
                 >
                   <MdPlayArrow size={28} aria-hidden="true" />
                 </span>
-                watch video
+                Tonton Video Profil
               </a>
             ) : (
-              // TODO: isi `aboutVideoUrl` di src/data/site.ts agar tombol ini aktif.
-              <button
-                type="button"
-                disabled
-                aria-label="Watch video (belum tersedia)"
-                title="Video profil sedang dipersiapkan"
-                className={`${watchVideoStyles} cursor-not-allowed`}
-              >
-                <span className={playIconStyles}>
-                  <MdPlayArrow size={28} aria-hidden="true" />
+              <div className="inline-flex items-center gap-3 text-sm font-medium text-muted">
+                <span className="flex size-11 items-center justify-center rounded-full bg-line text-muted">
+                  <MdPlayArrow size={24} aria-hidden="true" />
                 </span>
-                watch video
-              </button>
+                <span>Video profil sedang dipersiapkan</span>
+              </div>
             )}
           </div>
         </div>

@@ -79,6 +79,14 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 | `bun run typecheck`    | Validates TypeScript types with `tsc --noEmit`                   |
 | `bun test`             | Runs unit and route validation tests with Vitest                 |
 
+### Code Quality and Tooling (Biome)
+
+This project uses [Biome](https://biomejs.dev) as a unified replacement for ESLint and Prettier. Biome handles linting, formatting, and import organization in a single Rust-powered binary without plugins or configuration overhead.
+
+- **Unified Configuration**: Configured in [`biome.json`](biome.json) with Tailwind CSS v4 directive support (`@theme`, `@utility`), 2-space indentation, double quotes, and strict import sorting.
+- **Editor Integration**: VS Code workspace settings in [`.vscode/settings.json`](.vscode/settings.json) configure Biome as the default formatter with format-on-save and auto-import organization.
+- **CI Validation**: Run `bun run check:ci` in CI pipelines to assert code formatting, linting rules, and type health in milliseconds.
+
 ### API Contract Testing
 
 Frontend API schemas in `src/types/api.ts` are verified against the backend schema using contract tests. To execute them against a running backend instance:

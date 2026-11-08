@@ -72,7 +72,8 @@ export function About() {
                 type="button"
                 disabled
                 aria-label="Watch video (belum tersedia)"
-                className={`${watchVideoStyles} cursor-default`}
+                title="Video profil sedang dipersiapkan"
+                className={`${watchVideoStyles} cursor-not-allowed`}
               >
                 <span className={playIconStyles}>
                   <MdPlayArrow size={28} aria-hidden="true" />

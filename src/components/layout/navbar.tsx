@@ -86,7 +86,11 @@ export function Navbar() {
           aria-controls={menuId}
           onClick={() => setOpenPath(isOpen ? null : pathname)}
         >
-          {isOpen ? <MdClose size={26} /> : <MdMenu size={26} />}
+          {isOpen ? (
+            <MdClose size={26} aria-hidden="true" />
+          ) : (
+            <MdMenu size={26} aria-hidden="true" />
+          )}
         </button>
       </div>
 

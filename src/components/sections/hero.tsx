@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import type { HeroSlide } from "@/types/api";
 
 const arrowBase =
-  "inline-flex size-14 cursor-pointer items-center justify-center text-white transition-colors duration-200 motion-reduce:transition-none lg:size-[88px]";
+  "inline-flex size-14 cursor-pointer items-center justify-center text-white transition-colors duration-200 motion-reduce:transition-none focus-visible:outline-white lg:size-[88px]";
 
 /** Ukuran font besar dekoratif (128px di frame Figma 1280px). */
 const ghostText =

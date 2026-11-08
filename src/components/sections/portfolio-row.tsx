@@ -136,7 +136,7 @@ export function PortfolioRow({ items }: { items: PortfolioItem[] }) {
       </div>
 
       {items.length > 1 && canScroll && (
-        <div className="marquee-dots mt-2 flex items-center justify-center">
+        <div className="marquee-dots mt-2 flex flex-wrap items-center justify-center">
           {items.map((item, i) => (
             <button
               key={item._id}
@@ -144,7 +144,7 @@ export function PortfolioRow({ items }: { items: PortfolioItem[] }) {
               onClick={() => scrollToCard(i)}
               aria-label={`Tampilkan proyek ${i + 1}`}
               aria-current={i === activeIndex}
-              className="group inline-flex size-6 cursor-pointer items-center justify-center"
+              className="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center p-2"
             >
               <span
                 className={cn(

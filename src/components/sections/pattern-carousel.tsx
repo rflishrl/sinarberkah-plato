@@ -112,7 +112,7 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
             onClick={() => scrollToSlide(i)}
             aria-label={`Tampilkan slide ${i + 1}`}
             aria-current={i === index}
-            className="group inline-flex size-7 cursor-pointer items-center justify-center"
+            className="group inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center p-2"
           >
             <span
               className={cn(

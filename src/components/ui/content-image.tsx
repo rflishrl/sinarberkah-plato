@@ -33,7 +33,7 @@ export function ContentImage({
       sizes={sizes}
       loading={preload ? "eager" : "lazy"}
       decoding="async"
-      fetchPriority={preload ? "high" : "auto"}
+      fetchPriority={preload ? "high" : undefined}
       className={cn("absolute inset-0 size-full", className)}
       {...props}
     />

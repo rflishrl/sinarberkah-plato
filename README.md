@@ -119,10 +119,12 @@ Legacy paths `/cart` and `/produk` return permanent HTTP 308 redirects to `/prod
 
 ## Web Standards and Accessibility
 
-- **Core Web Vitals Optimization**: The above-the-fold hero image declares `fetchPriority="high"` and eager loading, eliminating delay on Largest Contentful Paint (LCP).
+- **Core Web Vitals Optimization**: The above-the-fold hero image declares `fetchPriority="high"` and eager loading, eliminating delay on Largest Contentful Paint (LCP). Non-critical images omit unnecessary priority hints to keep HTML standard-compliant.
 - **Cumulative Layout Shift Prevention**: Images and embedded maps declare explicit dimensions and aspect-ratio styling to prevent unexpected layout shifts.
-- **Keyboard Navigation**: All interactive elements are reachable via `Tab`, with clearly visible focus outlines that adapt to system highlight colors in high-contrast modes.
+- **Color Contrast and Visual Affordance**: The primary brand palette (`#d94435`) satisfies WCAG 2.1 AA contrast requirements against light surfaces and on white-text button labels.
+- **Keyboard Navigation**: All interactive elements are reachable via `Tab`, with clearly visible focus outlines that adapt to system highlight colors in high-contrast modes and remain visible over dark imagery.
 - **Touch Target Sizing**: Mobile interactive controls provide minimum tap targets of 44px for reliable interaction.
+- **Desktop Navigation Controls**: Horizontal sliders and carousels provide dedicated desktop chevron navigation buttons in addition to indicator dots, ensuring accessible pagination for mouse users.
 - **Reduced Motion Support**: Carousels, marquee animations, and CSS transitions pause or reduce duration when `prefers-reduced-motion: reduce` is detected.
 - **Self-hosted Typography**: Variable font files for Mulish and Open Sans are served directly from the application bundle, avoiding third-party font request latency.
 

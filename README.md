@@ -19,7 +19,7 @@ Product records, portfolio entries, and ornamental patterns are managed through 
 - **Typography**: `@fontsource-variable/mulish` (headings) and `@fontsource-variable/open-sans` (body), self-hosted
 - **Linter and formatter**: Biome 2.6
 - **Language**: TypeScript 5.9 (strict mode)
-- **Testing**: Vitest 5
+- **Testing**: Bun Test (`bun:test`)
 - **Icons**: React Icons (Material Design and FontAwesome)
 - **Validation**: Zod 4
 
@@ -88,14 +88,15 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 | `bun run format`       | Formats project files with Biome                                 |
 | `bun run format:check` | Verifies code formatting with Biome without modifying files      |
 | `bun run typecheck`    | Validates TypeScript types with `tsc --noEmit`                   |
-| `bun test`             | Runs unit and route validation tests with Vitest                 |
+| `bun test`             | Runs unit, API, and route validation tests with Bun test runner  |
+| `bun run test:watch`   | Runs Bun tests in watch mode                                     |
 
 ### Code Quality and Tooling (Biome)
 
 This project uses [Biome](https://biomejs.dev) as a unified replacement for ESLint and Prettier. Biome handles linting, formatting, and import organization in a single Rust-powered binary without plugins or configuration overhead.
 
 - **Unified Configuration**: Configured in [`biome.json`](biome.json) with Tailwind CSS v4 directive support (`@theme`, `@utility`), 2-space indentation, double quotes, and strict import sorting.
-- **Editor Integration**: VS Code workspace settings in [`.vscode/settings.json`](.vscode/settings.json) configure Biome as the default formatter with format-on-save and auto-import organization.
+- **Editor Integration**: Configure Biome in your editor as the default formatter with format-on-save and auto-import organization.
 - **CI Validation**: Run `bun run check:ci` in CI pipelines to assert code formatting, linting rules, and type health in milliseconds.
 
 ### API Contract Testing

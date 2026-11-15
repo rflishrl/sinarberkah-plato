@@ -40,5 +40,7 @@ next-env.d.ts
 # local agent skills
 .agents/
 .agent/
+anti-slop/
 
-
+# editor settings
+.vscode/

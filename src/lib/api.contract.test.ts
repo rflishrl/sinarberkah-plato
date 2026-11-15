@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 import { z } from "zod";
 
 import { articleSchema, galleryItemSchema, productSchema } from "@/types/api";
@@ -9,7 +9,7 @@ import { articleSchema, galleryItemSchema, productSchema } from "@/types/api";
  * menangkap jika keduanya mulai berbeda.
  *
  * Hanya jalan jika `CONTRACT_API_URL` diisi, mis. di PowerShell:
- *   $env:CONTRACT_API_URL="http://localhost:4000"; npm test
+ *   $env:CONTRACT_API_URL="http://localhost:4000"; bun test
  * Endpoint yang masih kosong lolos begitu saja, jadi isi minimal satu data per jenis dulu.
  */
 const baseUrl = process.env.CONTRACT_API_URL?.trim().replace(/\/$/, "");
@@ -34,6 +34,9 @@ describe.skipIf(!baseUrl)("kontrak API backend", () => {
       }),
     });
     const result = envelope.safeParse(await response.json());
-    expect(result.success, result.error?.message).toBe(true);
+    if (!result.success) {
+      throw new Error(result.error.message);
+    }
+    expect(result.success).toBe(true);
   });
 });

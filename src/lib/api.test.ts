@@ -1,8 +1,28 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  mock,
+  spyOn,
+} from "bun:test";
 
 import { ApiError, getApiBaseUrl, getGallery, getProducts } from "@/lib/api";
 
-const fetchMock = vi.fn();
+const fetchMock = mock();
+const originalFetch = globalThis.fetch;
+const originalApiBaseUrl = process.env.API_BASE_URL;
+const originalNodeEnv = process.env.NODE_ENV;
+let errorSpy: ReturnType<typeof spyOn> | undefined;
+
+function setEnv(key: string, value: string | undefined) {
+  if (value === undefined) {
+    delete process.env[key];
+  } else {
+    process.env[key] = value;
+  }
+}
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -21,13 +41,13 @@ const pattern = (id: string) => ({
 const calledUrls = () => fetchMock.mock.calls.map(([url]) => String(url));
 
 beforeEach(() => {
-  vi.stubGlobal("fetch", fetchMock);
-  vi.spyOn(console, "error").mockImplementation(() => {});
+  globalThis.fetch = fetchMock as unknown as typeof fetch;
+  errorSpy = spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterEach(() => {
-  vi.unstubAllGlobals();
-  vi.restoreAllMocks();
+  globalThis.fetch = originalFetch;
+  errorSpy?.mockRestore();
   fetchMock.mockReset();
 });
 
@@ -100,16 +120,19 @@ describe("fetchList (lewat getGallery)", () => {
 });
 
 describe("getApiBaseUrl", () => {
-  afterEach(() => vi.unstubAllEnvs());
+  afterEach(() => {
+    setEnv("API_BASE_URL", originalApiBaseUrl);
+    setEnv("NODE_ENV", originalNodeEnv);
+  });
 
   it("memakai API_BASE_URL tanpa garis miring di akhir", () => {
-    vi.stubEnv("API_BASE_URL", "https://api.example.com/");
+    setEnv("API_BASE_URL", "https://api.example.com/");
     expect(getApiBaseUrl()).toBe("https://api.example.com");
   });
 
   it("di produksi melempar error jika API_BASE_URL kosong", async () => {
-    vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("API_BASE_URL", "");
+    setEnv("NODE_ENV", "production");
+    setEnv("API_BASE_URL", "");
     expect(() => getApiBaseUrl()).toThrow(/API_BASE_URL/);
     await expect(getProducts()).rejects.toBeInstanceOf(ApiError);
     expect(fetchMock).not.toHaveBeenCalled();

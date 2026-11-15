@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 
 import { Route as cartRoute } from "@/routes/cart";
 import { productSearchSchema } from "@/routes/products";
@@ -8,7 +8,7 @@ describe("Route redirects (308)", () => {
   it("mengarahkan /cart ke /products dengan status 308", () => {
     try {
       (cartRoute.options.beforeLoad as (ctx: unknown) => void)({});
-      expect.fail("Harus melempar redirect");
+      throw new Error("Harus melempar redirect");
     } catch (error: unknown) {
       const redirectError = error as {
         status?: number;
@@ -24,7 +24,7 @@ describe("Route redirects (308)", () => {
   it("mengarahkan /produk ke /products dengan status 308", () => {
     try {
       (produkRoute.options.beforeLoad as (ctx: unknown) => void)({});
-      expect.fail("Harus melempar redirect");
+      throw new Error("Harus melempar redirect");
     } catch (error: unknown) {
       const redirectError = error as {
         status?: number;

@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "bun:test";
 
 import { handleRevalidate } from "@/routes/api/revalidate";
 
 const SECRET = "rahasia-revalidate-uji";
+const originalSecret = process.env.REVALIDATE_SECRET;
 
 const call = (body: unknown, authorization = `Bearer ${SECRET}`) =>
   handleRevalidate(
@@ -15,6 +16,14 @@ const call = (body: unknown, authorization = `Bearer ${SECRET}`) =>
 
 beforeEach(() => {
   process.env.REVALIDATE_SECRET = SECRET;
+});
+
+afterEach(() => {
+  if (originalSecret === undefined) {
+    delete process.env.REVALIDATE_SECRET;
+  } else {
+    process.env.REVALIDATE_SECRET = originalSecret;
+  }
 });
 
 describe("POST /api/revalidate", () => {

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "bun:test";
 
 import {
   deriveThumbUrl,
@@ -10,10 +10,19 @@ import { galleryItemSchema, productSchema } from "@/types/api";
 
 const TEST_DOMAIN = "https://media-sb.example.test";
 const UUID = "550e8400-e29b-41d4-a716-446655440000";
+const originalMediaDomain = process.env.VITE_MEDIA_PUBLIC_DOMAIN;
+
+function setEnv(key: string, value: string | undefined) {
+  if (value === undefined) {
+    delete process.env[key];
+  } else {
+    process.env[key] = value;
+  }
+}
 
 describe("media-url (sinarberkah-plato)", () => {
   afterEach(() => {
-    vi.unstubAllEnvs();
+    setEnv("VITE_MEDIA_PUBLIC_DOMAIN", originalMediaDomain);
   });
 
   it("hanya mengizinkan domain env dan aset lokal", () => {
@@ -33,7 +42,7 @@ describe("media-url (sinarberkah-plato)", () => {
     ).toBe(false);
     expect(isAllowedMediaUrl("javascript:alert(1)", TEST_DOMAIN)).toBe(false);
 
-    vi.stubEnv("VITE_MEDIA_PUBLIC_DOMAIN", TEST_DOMAIN);
+    setEnv("VITE_MEDIA_PUBLIC_DOMAIN", TEST_DOMAIN);
     expect(isOptimizableImage(`${TEST_DOMAIN}/${UUID}.webp`)).toBe(true);
     expect(isOptimizableImage("https://evil.example.com/a.webp")).toBe(false);
   });
@@ -82,7 +91,7 @@ describe("media-url (sinarberkah-plato)", () => {
   });
 
   it("memvalidasi host gambar pada skema Zod produk dan galeri", () => {
-    vi.stubEnv("VITE_MEDIA_PUBLIC_DOMAIN", TEST_DOMAIN);
+    setEnv("VITE_MEDIA_PUBLIC_DOMAIN", TEST_DOMAIN);
 
     expect(
       productSchema.safeParse({

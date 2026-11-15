@@ -15,7 +15,7 @@ const pattern = (id: string) => ({
   title: `Pola ${id}`,
   type: "LC",
   description: "",
-  image: { image_url: "https://a.public.blob.vercel-storage.com/p.jpg" },
+  image: { image_url: "/images/p.jpg" },
 });
 
 const calledUrls = () => fetchMock.mock.calls.map(([url]) => String(url));

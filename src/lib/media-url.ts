@@ -1,5 +1,3 @@
-const BLOB_HOST_SUFFIX = ".public.blob.vercel-storage.com";
-
 export type MediaVariant = "thumb" | "full";
 
 export interface ResolveMediaOptions {
@@ -14,15 +12,15 @@ function readConfiguredDomain(explicitDomain?: string): string | undefined {
     return explicitDomain.trim() || undefined;
   }
 
-  const metaEnv = (import.meta as { env?: Record<string, string | undefined> })
-    .env;
-  const fromImportMeta = metaEnv?.VITE_MEDIA_PUBLIC_DOMAIN?.trim();
-  if (fromImportMeta) return fromImportMeta;
-
   if (typeof process !== "undefined") {
     const fromProcess = process.env.VITE_MEDIA_PUBLIC_DOMAIN?.trim();
     if (fromProcess) return fromProcess;
   }
+
+  const metaEnv = (import.meta as { env?: Record<string, string | undefined> })
+    .env;
+  const fromImportMeta = metaEnv?.VITE_MEDIA_PUBLIC_DOMAIN?.trim();
+  if (fromImportMeta) return fromImportMeta;
 
   return undefined;
 }
@@ -48,10 +46,6 @@ export function getConfiguredMediaOrigin(
   }
 }
 
-function isLegacyBlobUrl(url: URL): boolean {
-  return url.protocol === "https:" && url.hostname.endsWith(BLOB_HOST_SUFFIX);
-}
-
 function isLocalDevApiAsset(url: URL): boolean {
   if (typeof process !== "undefined" && process.env.NODE_ENV === "production") {
     return false;
@@ -67,7 +61,6 @@ function isLocalDevApiAsset(url: URL): boolean {
  * Daftar host yang diizinkan untuk media:
  * - Aset statis lokal diawali `/` tunggal (bukan `//`)
  * - Host persis yang dikonfigurasi lewat `VITE_MEDIA_PUBLIC_DOMAIN`
- * - Host Vercel Blob lama (`*.public.blob.vercel-storage.com`) selama masa transisi
  * - Backend lokal (`http://localhost:4000/...`) di luar produksi
  */
 export function isAllowedMediaUrl(
@@ -90,10 +83,6 @@ export function isAllowedMediaUrl(
 
   const configuredOrigin = getConfiguredMediaOrigin(explicitDomain);
   if (configuredOrigin && parsed.origin === configuredOrigin) {
-    return true;
-  }
-
-  if (isLegacyBlobUrl(parsed)) {
     return true;
   }
 

@@ -16,18 +16,12 @@ describe("media-url (sinarberkah-plato)", () => {
     vi.unstubAllEnvs();
   });
 
-  it("hanya mengizinkan domain env, Blob legacy, dan aset lokal", () => {
+  it("hanya mengizinkan domain env dan aset lokal", () => {
     expect(isAllowedMediaUrl(`${TEST_DOMAIN}/${UUID}.webp`, TEST_DOMAIN)).toBe(
       true,
     );
     expect(
       isAllowedMediaUrl(`${TEST_DOMAIN}/dev/${UUID}.webp`, TEST_DOMAIN),
-    ).toBe(true);
-    expect(
-      isAllowedMediaUrl(
-        "https://a.public.blob.vercel-storage.com/p.jpg",
-        TEST_DOMAIN,
-      ),
     ).toBe(true);
     expect(isAllowedMediaUrl("/images/hero-1.png", TEST_DOMAIN)).toBe(true);
 
@@ -55,11 +49,8 @@ describe("media-url (sinarberkah-plato)", () => {
       deriveThumbUrl(`${TEST_DOMAIN}/${UUID}-thumb.webp`, TEST_DOMAIN),
     ).toBe(`${TEST_DOMAIN}/${UUID}-thumb.webp`);
     expect(
-      deriveThumbUrl(
-        "https://a.public.blob.vercel-storage.com/old.jpg",
-        TEST_DOMAIN,
-      ),
-    ).toBe("https://a.public.blob.vercel-storage.com/old.jpg");
+      deriveThumbUrl("https://other.example.com/old.jpg", TEST_DOMAIN),
+    ).toBe("https://other.example.com/old.jpg");
     expect(deriveThumbUrl("/images/hero-1.png", TEST_DOMAIN)).toBe(
       "/images/hero-1.png",
     );

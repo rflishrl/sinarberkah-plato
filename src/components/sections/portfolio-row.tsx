@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { cn } from "@/lib/utils";
 import type { PortfolioItem } from "@/types/api";
 
@@ -125,9 +125,14 @@ export function PortfolioRow({ items }: { items: PortfolioItem[] }) {
               aria-hidden={isClone ? true : undefined}
               className="relative mr-4 aspect-[235/250] w-[70vw] max-w-60 shrink-0 snap-start bg-line sm:w-60"
             >
-              <ContentImage
+              <MediaImage
+                fill
                 src={item.image.image_url}
+                thumbSrc={item.image.thumb_url}
+                variant="thumb"
                 alt={isClone ? "" : item.title}
+                width={480}
+                height={510}
                 sizes="(min-width: 640px) 240px, 70vw"
                 className="object-cover"
               />

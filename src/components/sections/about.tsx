@@ -1,6 +1,6 @@
 import { MdPlayArrow } from "react-icons/md";
 
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { siteConfig } from "@/data/site";
 
 const watchVideoStyles =
@@ -18,17 +18,25 @@ export function About() {
         {/* Dua foto bertumpuk */}
         <div className="relative mx-auto aspect-[372/410] w-full max-w-[372px]">
           <div className="absolute top-0 left-0 h-[76.1%] w-[67.2%] shadow-photo">
-            <ContentImage
+            <MediaImage
+              fill
               src="/images/about-grinding.png"
+              variant="full"
               alt="Pekerja menggerinda rangka besi hingga memercikkan api"
+              width={464}
+              height={580}
               sizes="(min-width: 1024px) 250px, 60vw"
               className="object-cover"
             />
           </div>
           <div className="absolute right-0 bottom-0 h-[79%] w-[67.2%] shadow-photo">
-            <ContentImage
-              src="/images/about-welding.png"
+            <MediaImage
+              fill
+              src="/images/about-welding.webp"
+              variant="full"
               alt="Pekerja mengelas pipa besi di dalam bengkel"
+              width={1074}
+              height={806}
               sizes="(min-width: 1024px) 250px, 60vw"
               className="object-cover object-[25%_50%]"
             />

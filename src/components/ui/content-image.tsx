@@ -1,41 +1,32 @@
 import type { ComponentProps } from "react";
 
-import { cn } from "@/lib/utils";
+import { MediaImage } from "@/components/ui/media-image";
+import type { MediaVariant } from "@/lib/media-url";
 
 interface ContentImageProps
-  extends Omit<ComponentProps<"img">, "src" | "alt" | "sizes"> {
+  extends Omit<
+    ComponentProps<"img">,
+    "src" | "alt" | "sizes" | "loading" | "decoding" | "fetchPriority"
+  > {
   src: string;
+  thumbSrc?: string;
+  variant?: MediaVariant;
   alt: string;
   sizes?: string;
   className?: string;
   preload?: boolean;
+  priority?: "high" | "low";
+  fallback?: string;
 }
 
 /**
- * Komponen gambar pengganti next/image yang mengisi elemen pembungkus (parent).
- * Parent harus memiliki posisi `relative` dan rasio/ukuran pasti.
- *
- * Menggunakan `fetchPriority="high"` dan `loading="eager"` jika `preload` aktif (mis. LCP hero slide),
- * serta `loading="lazy"` dan `decoding="async"` untuk gambar di bawah fold.
+ * Komponen gambar pembungkus yang mengisi elemen parent (`relative` + aspect ratio).
+ * Mendelegasikan ke `MediaImage` untuk validasi host dan varian `thumb`/`full`.
  */
 export function ContentImage({
-  src,
-  alt,
-  sizes,
-  className,
   preload = false,
+  priority,
   ...props
 }: ContentImageProps) {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      sizes={sizes}
-      loading={preload ? "eager" : "lazy"}
-      decoding="async"
-      fetchPriority={preload ? "high" : undefined}
-      className={cn("absolute inset-0 size-full", className)}
-      {...props}
-    />
-  );
+  return <MediaImage fill priority={preload ? "high" : priority} {...props} />;
 }

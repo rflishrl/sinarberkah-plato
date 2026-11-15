@@ -4,7 +4,7 @@ import { useId, useMemo, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa6";
 import { MdSearch } from "react-icons/md";
 
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { EmptyState } from "@/components/ui/page-header";
 import { siteConfig } from "@/data/site";
 import { formatRupiah } from "@/lib/utils";
@@ -77,9 +77,14 @@ export function ProductGrid({
               <div>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xs bg-line">
                   {product.image.image_url ? (
-                    <ContentImage
+                    <MediaImage
+                      fill
                       src={product.image.image_url}
+                      thumbSrc={product.image.thumb_url}
+                      variant="thumb"
                       alt={product.name}
+                      width={480}
+                      height={360}
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
                     />

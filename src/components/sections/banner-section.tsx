@@ -1,5 +1,5 @@
 import { ButtonLink } from "@/components/ui/button";
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { cn } from "@/lib/utils";
 
 interface BannerSectionProps {
@@ -34,8 +34,10 @@ export function BannerSection({
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 -z-10 h-40 sm:h-full"
       >
-        <ContentImage
+        <MediaImage
+          fill
           src={image}
+          variant="full"
           alt=""
           sizes="100vw"
           className="object-cover object-right-bottom"

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { EmptyState, PageHeader } from "@/components/ui/page-header";
 import { buildHeadMeta } from "@/lib/metadata";
 import { getArticlesServerFn } from "@/lib/server-fns";
@@ -36,9 +36,14 @@ function ArticlePage() {
                 className="flex flex-col gap-6 py-8 first:pt-0 md:flex-row"
               >
                 <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-line md:w-64">
-                  <ContentImage
+                  <MediaImage
+                    fill
                     src={article.image.image_url}
+                    thumbSrc={article.image.thumb_url}
+                    variant="thumb"
                     alt={article.title}
+                    width={480}
+                    height={360}
                     sizes="(min-width: 768px) 256px, 100vw"
                     className="object-cover"
                   />

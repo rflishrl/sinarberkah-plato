@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 import { ButtonLink } from "@/components/ui/button";
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { cn } from "@/lib/utils";
 import type { HeroSlide } from "@/types/api";
 
@@ -89,11 +89,15 @@ export function Hero({ slides }: { slides: HeroSlide[] }) {
             key={`image-${slide.id}`}
             className="relative aspect-[574/385] w-full animate-fade-in overflow-hidden bg-line"
           >
-            <ContentImage
+            <MediaImage
+              fill
               src={slide.image.src}
+              variant="full"
               alt={slide.image.alt}
+              width={1148}
+              height={770}
               sizes="(min-width: 1280px) 574px, (min-width: 1024px) 45vw, 100vw"
-              preload={index === 0}
+              priority={index === 0 ? "high" : "low"}
               className="object-cover grayscale"
             />
           </div>

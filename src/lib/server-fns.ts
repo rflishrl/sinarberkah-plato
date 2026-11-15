@@ -14,12 +14,37 @@ export const getPortfolioServerFn = createServerFn({ method: "GET" }).handler(
   },
 );
 
+export const getHomePortfolioServerFn = createServerFn({
+  method: "GET",
+}).handler(async (): Promise<PortfolioItem[]> => {
+  try {
+    return await getPortfolio({ limit: 6, maxPages: 1 });
+  } catch (error) {
+    console.error(
+      "[api] Gagal mengambil pratinjau portfolio di server:",
+      error,
+    );
+    return [];
+  }
+});
+
 export const getGalleryServerFn = createServerFn({ method: "GET" }).handler(
   async (): Promise<GalleryItem[]> => {
     try {
       return await getGallery();
     } catch (error) {
       console.error("[api] Gagal mengambil galeri di server:", error);
+      return [];
+    }
+  },
+);
+
+export const getHomeGalleryServerFn = createServerFn({ method: "GET" }).handler(
+  async (): Promise<GalleryItem[]> => {
+    try {
+      return await getGallery({ limit: 12, maxPages: 1 });
+    } catch (error) {
+      console.error("[api] Gagal mengambil pratinjau galeri di server:", error);
       return [];
     }
   },

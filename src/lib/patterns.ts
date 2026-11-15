@@ -12,6 +12,7 @@ export function buildPatternSlides(items: GalleryItem[]): PatternSlide[] {
     id: item._id,
     kind: "image" as const,
     src: item.image.image_url,
+    thumbSrc: item.image.thumb_url,
     alt: item.title,
   }));
 }

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { ProductGrid } from "@/components/sections/product-grid";
 import { JsonLd } from "@/components/ui/json-ld";
 import { EmptyState, PageHeader } from "@/components/ui/page-header";
+import { resolveMediaUrl } from "@/lib/media-url";
 import { absoluteUrl, buildHeadMeta } from "@/lib/metadata";
 import { getProductsServerFn } from "@/lib/server-fns";
 
@@ -38,9 +39,12 @@ function ProductsPage() {
         "@type": "Product",
         name: product.name,
         description: product.description || undefined,
-        image: product.image.image_url
-          ? absoluteUrl(product.image.image_url)
-          : undefined,
+        image: (() => {
+          const safeImage = resolveMediaUrl(product.image.image_url, {
+            variant: "full",
+          });
+          return safeImage ? absoluteUrl(safeImage) : undefined;
+        })(),
         offers: {
           "@type": "Offer",
           price: product.price,

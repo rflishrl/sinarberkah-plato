@@ -134,11 +134,14 @@ async function fetchList<T>(
   path: string,
   tag: CacheTag,
   schema: z.ZodType<T>,
+  options?: { limit?: number; maxPages?: number },
 ): Promise<T[]> {
   const items: T[] = [];
+  const limit = options?.limit ?? LIST_LIMIT;
+  const maxPages = options?.maxPages ?? MAX_PAGES;
 
-  for (let page = 1; page <= MAX_PAGES; page++) {
-    const pagePath = `${path}?limit=${LIST_LIMIT}&page=${page}`;
+  for (let page = 1; page <= maxPages; page++) {
+    const pagePath = `${path}?limit=${limit}&page=${page}`;
     const envelope = readEnvelope(await requestJson(pagePath, tag));
     if (!envelope) {
       throw new ApiError(`Bentuk respons ${pagePath} tidak dikenali.`);
@@ -157,22 +160,34 @@ async function fetchList<T>(
   }
 
   console.error(
-    `[api] ${path} punya lebih dari ${MAX_PAGES} halaman; sisanya tidak dimuat.`,
+    `[api] ${path} punya lebih dari ${maxPages} halaman; sisanya tidak dimuat.`,
   );
   return items;
 }
 
-export function getPortfolio(): Promise<PortfolioItem[]> {
+export function getPortfolio(options?: {
+  limit?: number;
+  maxPages?: number;
+}): Promise<PortfolioItem[]> {
   return fetchList(
     "/api/gallery/v1/portfolio",
     CACHE_TAGS.portfolio,
     galleryItemSchema,
+    options,
   );
 }
 
 /** Galeri pola. Alamat dan tag cache-nya dipakai bersama oleh halaman Galeri dan beranda. */
-export function getGallery(): Promise<GalleryItem[]> {
-  return fetchList("/api/gallery/v1", CACHE_TAGS.gallery, galleryItemSchema);
+export function getGallery(options?: {
+  limit?: number;
+  maxPages?: number;
+}): Promise<GalleryItem[]> {
+  return fetchList(
+    "/api/gallery/v1",
+    CACHE_TAGS.gallery,
+    galleryItemSchema,
+    options,
+  );
 }
 
 /** Produk aktif. */

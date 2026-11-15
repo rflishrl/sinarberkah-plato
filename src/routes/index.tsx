@@ -19,16 +19,20 @@ import { heroSlides } from "@/data/content";
 import { siteConfig } from "@/data/site";
 import { absoluteUrl, buildHeadMeta } from "@/lib/metadata";
 import { buildPatternSlides } from "@/lib/patterns";
-import { getGalleryServerFn, getPortfolioServerFn } from "@/lib/server-fns";
+import {
+  getHomeGalleryServerFn,
+  getHomePortfolioServerFn,
+} from "@/lib/server-fns";
 import { whatsappLink } from "@/lib/whatsapp";
 
 const PREVIEW_COUNT = 6;
+const PATTERN_PREVIEW_COUNT = 12;
 
 export const Route = createFileRoute("/")({
   loader: () => {
     return {
-      portfolioPromise: getPortfolioServerFn(),
-      galleryPromise: getGalleryServerFn(),
+      portfolioPromise: getHomePortfolioServerFn(),
+      galleryPromise: getHomeGalleryServerFn(),
     };
   },
   head: () =>
@@ -90,7 +94,9 @@ function HomePage() {
       <Suspense fallback={<PatternGallerySkeleton />}>
         <Await promise={galleryPromise}>
           {(gallery) => {
-            const slides = buildPatternSlides(gallery);
+            const slides = buildPatternSlides(
+              gallery.slice(0, PATTERN_PREVIEW_COUNT),
+            );
             return (
               <section id="patterns" className="py-16 lg:py-24">
                 <div className="container-page flex flex-col items-center text-center">

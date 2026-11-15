@@ -1,4 +1,5 @@
 import { siteConfig } from "@/data/site";
+import { resolveMediaUrl } from "@/lib/media-url";
 
 interface PageHeadInput {
   title: string;
@@ -36,7 +37,11 @@ export function buildHeadMeta({
     ? `${title} | ${siteConfig.name}`
     : `${siteConfig.name} | ${siteConfig.tagline}`;
   const canonicalUrl = `${siteConfig.url}${path === "/" ? "" : path}`;
-  const imageUrl = absoluteUrl(image.url);
+  const safeImageUrl = resolveMediaUrl(image.url, {
+    variant: "full",
+    fallback: defaultImage.url,
+  });
+  const imageUrl = absoluteUrl(safeImageUrl);
 
   return {
     meta: [

@@ -1,3 +1,5 @@
+import { isAllowedMediaUrl } from "@/lib/media-url";
+
 type ClassValue = string | false | null | undefined;
 
 /** Menggabungkan class name, mengabaikan nilai kosong. */
@@ -30,14 +32,9 @@ export function formatDate(value: string): string {
 }
 
 /**
- * Gambar yang boleh dioptimasi Next.js: gambar lokal (/public) dan gambar di Vercel Blob
- * (host-nya terdaftar di images.remotePatterns pada next.config.ts).
+ * Gambar yang berasal dari aset lokal (`/public`), domain media R2 (`VITE_MEDIA_PUBLIC_DOMAIN`),
+ * atau host Vercel Blob legacy selama masa transisi.
  */
 export function isOptimizableImage(src: string): boolean {
-  if (src.startsWith("/")) return true;
-  try {
-    return new URL(src).hostname.endsWith(".public.blob.vercel-storage.com");
-  } catch {
-    return false;
-  }
+  return isAllowedMediaUrl(src);
 }

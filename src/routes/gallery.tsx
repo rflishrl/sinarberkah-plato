@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { EmptyState, PageHeader } from "@/components/ui/page-header";
 import { buildHeadMeta } from "@/lib/metadata";
 import { getGalleryServerFn } from "@/lib/server-fns";
@@ -41,9 +41,14 @@ function GalleryPage() {
               <li key={item._id}>
                 <figure>
                   <div className="relative aspect-[3/4] w-full overflow-hidden border border-line bg-white">
-                    <ContentImage
+                    <MediaImage
+                      fill
                       src={item.image.image_url}
+                      thumbSrc={item.image.thumb_url}
+                      variant="thumb"
                       alt={item.title}
+                      width={480}
+                      height={640}
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       className="object-contain"
                     />

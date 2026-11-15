@@ -40,7 +40,7 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: "Layanan Kami",
     ctaHref: "#services",
     image: {
-      src: "/images/about-welding.png",
+      src: "/images/about-welding.webp",
       alt: "Pekerja mengelas pipa besi di bengkel",
     },
   },

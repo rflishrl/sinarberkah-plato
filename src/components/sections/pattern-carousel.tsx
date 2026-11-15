@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { useMediaQuery } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 import type { PatternSlide } from "@/types/api";
@@ -103,21 +103,27 @@ export function PatternCarousel({ slides }: { slides: PatternSlide[] }) {
               className="w-full shrink-0 snap-center"
             >
               {slide.kind === "strip" ? (
-                <img
+                <MediaImage
                   src={slide.src}
+                  variant="full"
+                  priority={i === 0 ? undefined : "low"}
                   alt={slide.alt}
                   width={1116}
                   height={446}
-                  loading="lazy"
-                  decoding="async"
                   sizes="(min-width: 768px) 695px, 100vw"
                   className="h-auto w-full"
                 />
               ) : (
                 <div className="relative mx-auto h-[220px] w-full bg-white sm:h-[360px] lg:h-[440px]">
-                  <ContentImage
+                  <MediaImage
+                    fill
                     src={slide.src}
+                    thumbSrc={slide.thumbSrc}
+                    variant="thumb"
+                    priority={i === 0 ? undefined : "low"}
                     alt={slide.alt}
+                    width={480}
+                    height={480}
                     sizes="(min-width: 768px) 695px, 100vw"
                     className="object-contain"
                   />

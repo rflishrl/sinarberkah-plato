@@ -1,11 +1,22 @@
 import { z } from "zod";
 
+import { isAllowedMediaUrl } from "@/lib/media-url";
+
 /*
  * Skema respons API backend. Dipakai di `src/lib/api.ts` untuk memeriksa data saat jalan,
  * dan tipe TypeScript di bawahnya diturunkan dari skema yang sama.
  * `image_url` boleh kosong (produk tanpa foto).
  */
-const apiImageSchema = z.object({ image_url: z.string() });
+const allowedImageUrlSchema = z
+  .string()
+  .refine((value) => value === "" || isAllowedMediaUrl(value), {
+    message: "Host URL media tidak diizinkan.",
+  });
+
+const apiImageSchema = z.object({
+  image_url: allowedImageUrlSchema,
+  thumb_url: allowedImageUrlSchema.optional(),
+});
 
 /** Item galeri dan portofolio dikembalikan API dengan bentuk yang sama. */
 export const galleryItemSchema = z.object({
@@ -83,5 +94,5 @@ export interface Material {
  * - strip: satu gambar berisi deretan pola (data cadangan saat API kosong atau mati)
  */
 export type PatternSlide =
-  | { id: string; kind: "image"; src: string; alt: string }
+  | { id: string; kind: "image"; src: string; thumbSrc?: string; alt: string }
   | { id: string; kind: "strip"; src: string; alt: string };

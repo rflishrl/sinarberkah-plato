@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ContentImage } from "@/components/ui/content-image";
+import { MediaImage } from "@/components/ui/media-image";
 import { EmptyState, PageHeader } from "@/components/ui/page-header";
 import { buildHeadMeta } from "@/lib/metadata";
 import { getPortfolioServerFn } from "@/lib/server-fns";
@@ -34,9 +34,14 @@ function PortfolioPage() {
             {items.map((item) => (
               <li key={item._id} className="flex flex-col bg-surface p-5">
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-line">
-                  <ContentImage
+                  <MediaImage
+                    fill
                     src={item.image.image_url}
+                    thumbSrc={item.image.thumb_url}
+                    variant="thumb"
                     alt={item.title}
+                    width={480}
+                    height={360}
                     sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     className="object-cover"
                   />

@@ -1,82 +1,65 @@
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, vi } from 'vitest';
 
-import { Route as cartRoute } from "@/routes/cart";
-import { productSearchSchema } from "@/routes/products";
-import { Route as produkRoute } from "@/routes/produk";
+vi.mock('$app/env/private', () => ({
+	API_BASE_URL: 'http://localhost:4000',
+	REVALIDATE_SECRET: ''
+}));
 
-describe("Route redirects (308)", () => {
-  it("mengarahkan /cart ke /products dengan status 308", () => {
-    try {
-      (cartRoute.options.beforeLoad as (ctx: unknown) => void)({});
-      throw new Error("Harus melempar redirect");
-    } catch (error: unknown) {
-      const redirectError = error as {
-        status?: number;
-        options?: { to?: string; statusCode?: number };
-      };
-      expect(redirectError.status ?? redirectError.options?.statusCode).toBe(
-        308,
-      );
-      expect(redirectError.options?.to).toBe("/products");
-    }
-  });
+vi.mock('$app/env/public', () => ({
+	PUBLIC_MEDIA_PUBLIC_DOMAIN: '',
+	PUBLIC_SITE_URL: 'http://localhost:3000'
+}));
 
-  it("mengarahkan /produk ke /products dengan status 308", () => {
-    try {
-      (produkRoute.options.beforeLoad as (ctx: unknown) => void)({});
-      throw new Error("Harus melempar redirect");
-    } catch (error: unknown) {
-      const redirectError = error as {
-        status?: number;
-        options?: { to?: string; statusCode?: number };
-      };
-      expect(redirectError.status ?? redirectError.options?.statusCode).toBe(
-        308,
-      );
-      expect(redirectError.options?.to).toBe("/products");
-    }
-  });
+const { load: loadCart } = await import('../src/routes/cart/+page.server.js');
+const { load: loadProduk } = await import('../src/routes/produk/+page.server.js');
+const { load: loadProducts } = await import('../src/routes/products/+page.server.js');
+
+describe('Route redirects (308)', () => {
+	it('mengarahkan /cart ke /products dengan status 308', () => {
+		try {
+			loadCart({} as never);
+			throw new Error('Harus melempar redirect');
+		} catch (error: unknown) {
+			const redirectError = error as { status?: number; location?: string };
+			expect(redirectError.status).toBe(308);
+			expect(redirectError.location).toBe('/products');
+		}
+	});
+
+	it('mengarahkan /produk ke /products dengan status 308', () => {
+		try {
+			loadProduk({} as never);
+			throw new Error('Harus melempar redirect');
+		} catch (error: unknown) {
+			const redirectError = error as { status?: number; location?: string };
+			expect(redirectError.status).toBe(308);
+			expect(redirectError.location).toBe('/products');
+		}
+	});
 });
 
-describe("productSearchSchema validation", () => {
-  it("mempertahankan query yang valid", () => {
-    const result = productSearchSchema.safeParse({ q: "pagar minimalis" });
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.q).toBe("pagar minimalis");
-    }
-  });
+describe('products/+page.server.ts query parsing', () => {
+	it('mempertahankan dan melakukan trim query q yang valid', async () => {
+		const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+			return new Response(
+				JSON.stringify({ success: true, data: { items: [], pagination: { totalPages: 1 } } }),
+				{
+					status: 200,
+					headers: { 'content-type': 'application/json' }
+				}
+			);
+		});
 
-  it("melakukan trim pada whitespace", () => {
-    const result = productSearchSchema.safeParse({ q: "   ornamen plat   " });
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.q).toBe("ornamen plat");
-    }
-  });
+		const result = await loadProducts({
+			url: new URL('http://localhost/products?q=%20%20pagar%20minimalis%20%20')
+		} as never);
+		expect(result).toEqual({ products: [], initialQuery: 'pagar minimalis' });
 
-  it("mereset query ke empty string jika melebihi panjang 100 karakter", () => {
-    const longString = "a".repeat(105);
-    const result = productSearchSchema.safeParse({ q: longString });
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.q).toBe("");
-    }
-  });
+		const tooLong = await loadProducts({
+			url: new URL(`http://localhost/products?q=${'a'.repeat(105)}`)
+		} as never);
+		expect(tooLong).toEqual({ products: [], initialQuery: '' });
 
-  it("mereset query ke empty string jika tipe data salah", () => {
-    const result = productSearchSchema.safeParse({ q: 12345 });
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.q).toBe("");
-    }
-  });
-
-  it("memberikan empty string secara default jika q tidak disediakan", () => {
-    const result = productSearchSchema.safeParse({});
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.data.q).toBe("");
-    }
-  });
+		fetchMock.mockRestore();
+	});
 });

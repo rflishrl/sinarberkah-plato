@@ -1,18 +1,18 @@
-import { patternSlides } from "@/data/content";
-import type { GalleryItem, PatternSlide } from "@/types/api";
+import { patternSlides } from '#lib/data/content.js';
+import type { GalleryItem, PatternSlide } from '#lib/types/api.js';
 
 /**
  * Mengubah pola dari API menjadi slide: satu pola satu slide, hanya gambar.
  * Jika belum ada pola di API, dipakai gambar deretan pola bawaan.
  */
 export function buildPatternSlides(items: GalleryItem[]): PatternSlide[] {
-  if (items.length === 0) return patternSlides;
+	if (items.length === 0) return patternSlides;
 
-  return items.map((item) => ({
-    id: item._id,
-    kind: "image" as const,
-    src: item.image.image_url,
-    thumbSrc: item.image.thumb_url,
-    alt: item.title,
-  }));
+	return items.map((item) => ({
+		id: item._id,
+		kind: 'image' as const,
+		src: item.image.image_url,
+		thumbSrc: item.image.thumb_url,
+		alt: item.title
+	}));
 }

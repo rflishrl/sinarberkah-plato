@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "@fontsource-variable/mulish";
-@import "@fontsource-variable/open-sans";
+@import 'tailwindcss';
+@import '@fontsource-variable/mulish';
+@import '@fontsource-variable/open-sans';
 
 /*
  * Design tokens, diadaptasi dari Figma "PLATO Landing Page" (Version 2).
@@ -9,130 +9,130 @@
  * - `muted` sedikit lebih gelap dari abu-abu Figma (#777) yang kontrasnya 4.48:1.
  */
 @theme {
-  --color-brand: #d94435;
-  --color-brand-hover: #be3527;
-  --color-accent: #55acee;
-  --color-ink: #222222;
-  --color-muted: #6b6b6b;
-  --color-surface: #f7f7f7;
-  --color-line: #e3e3e3;
-  --color-ghost: #eeeeee;
+	--color-brand: #d94435;
+	--color-brand-hover: #be3527;
+	--color-accent: #55acee;
+	--color-ink: #222222;
+	--color-muted: #6b6b6b;
+	--color-surface: #f7f7f7;
+	--color-line: #e3e3e3;
+	--color-ghost: #eeeeee;
 
-  --shadow-card: 0 3px 8px 0 rgb(0 0 0 / 0.07);
-  --shadow-photo: 0 1px 12px 2px rgb(34 34 34 / 0.18);
-  --shadow-panel: 0 4px 8px 1px rgb(0 0 0 / 0.13);
+	--shadow-card: 0 3px 8px 0 rgb(0 0 0 / 0.07);
+	--shadow-photo: 0 1px 12px 2px rgb(34 34 34 / 0.18);
+	--shadow-panel: 0 4px 8px 1px rgb(0 0 0 / 0.13);
 
-  --animate-fade-in: fade-in 350ms ease-out both;
+	--animate-fade-in: fade-in 350ms ease-out both;
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 
 @theme inline {
-  --font-sans:
-    "Open Sans Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
-  --font-heading:
-    "Mulish Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+	--font-sans:
+		'Open Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+		sans-serif;
+	--font-heading:
+		'Mulish Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+		sans-serif;
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
-    scrollbar-gutter: stable;
-    -webkit-text-size-adjust: 100%;
-  }
+	html {
+		scroll-behavior: smooth;
+		scroll-padding-top: 5rem;
+		scrollbar-gutter: stable;
+		-webkit-text-size-adjust: 100%;
+	}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    text-wrap: balance;
-  }
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-wrap: balance;
+	}
 
-  p {
-    text-wrap: pretty;
-  }
+	p {
+		text-wrap: pretty;
+	}
 
-  body {
-    background-color: #fff;
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+	body {
+		background-color: #fff;
+		color: var(--color-ink);
+		font-family: var(--font-sans);
+		line-height: 1.6;
+		-webkit-font-smoothing: antialiased;
+	}
 
-  button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]),
-  a[href],
-  summary,
-  select {
-    cursor: pointer;
-  }
+	button:not(:disabled),
+	[role='button']:not([aria-disabled='true']),
+	a[href],
+	summary,
+	select {
+		cursor: pointer;
+	}
 
-  button:disabled,
-  [role="button"][aria-disabled="true"],
-  :disabled {
-    cursor: not-allowed;
-  }
+	button:disabled,
+	[role='button'][aria-disabled='true'],
+	:disabled {
+		cursor: not-allowed;
+	}
 
-  :focus-visible {
-    outline: 2px solid var(--focus-color, var(--color-brand));
-    outline-offset: 2px;
-  }
+	:focus-visible {
+		outline: 2px solid var(--focus-color, var(--color-brand));
+		outline-offset: 2px;
+	}
 
-  @media (forced-colors: active) {
-    :focus-visible {
-      outline: 2px solid Highlight;
-    }
-  }
+	@media (forced-colors: active) {
+		:focus-visible {
+			outline: 2px solid Highlight;
+		}
+	}
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
 
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
 }
 
 /* Lebar konten standar: maks 1280px (lebar frame Figma) dengan padding responsif. */
 @utility container-page {
-  margin-inline: auto;
-  width: 100%;
-  max-width: 1280px;
-  padding-inline: 1.25rem;
+	margin-inline: auto;
+	width: 100%;
+	max-width: 1280px;
+	padding-inline: 1.25rem;
 
-  @media (min-width: 40rem) {
-    padding-inline: 2rem;
-  }
+	@media (min-width: 40rem) {
+		padding-inline: 2rem;
+	}
 
-  @media (min-width: 64rem) {
-    padding-inline: 3.5rem;
-  }
+	@media (min-width: 64rem) {
+		padding-inline: 3.5rem;
+	}
 }
 
 /* Bagian gelap: cincin fokus berwarna putih agar tetap terlihat. */
 @utility on-dark {
-  --focus-color: #fff;
+	--focus-color: #fff;
 }
 
 /*
@@ -141,40 +141,36 @@
  * Di luar itu, baris tetap bisa digulir manual dan salinan gambar (data-clone) disembunyikan.
  */
 .marquee-track [data-clone] {
-  display: none;
+	display: none;
 }
 
 @keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
+	to {
+		transform: translateX(-50%);
+	}
 }
 
-@media (min-width: 64rem) and (hover: hover) and (
-    prefers-reduced-motion: no-preference
-  ) {
-  .marquee-viewport {
-    overflow: hidden;
-  }
+@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+	.marquee-viewport {
+		overflow: hidden;
+	}
 
-  .marquee-track {
-    animation: marquee var(--marquee-duration, 36s) linear infinite;
-  }
+	.marquee-track {
+		animation: marquee var(--marquee-duration, 36s) linear infinite;
+	}
 
-  .marquee-track [data-clone] {
-    display: block;
-  }
+	.marquee-track [data-clone] {
+		display: block;
+	}
 
-  .marquee-viewport:hover .marquee-track {
-    animation-play-state: paused;
-  }
+	.marquee-viewport:hover .marquee-track {
+		animation-play-state: paused;
+	}
 }
 
 /* Titik penanda hanya untuk baris yang digeser manual (mobile dan tablet): portofolio dan galeri pola. */
-@media (min-width: 64rem) and (hover: hover) and (
-    prefers-reduced-motion: no-preference
-  ) {
-  .marquee-dots {
-    display: none;
-  }
+@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+	.marquee-dots {
+		display: none;
+	}
 }

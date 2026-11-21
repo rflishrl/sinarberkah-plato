@@ -4,8 +4,7 @@
 	"type": "module",
 	"private": true,
 	"engines": {
-		"bun": ">=1.0.0",
-		"node": ">=22.17"
+		"bun": ">=1.0.0"
 	},
 	"imports": {
 		"#lib": "./src/lib/index.js",

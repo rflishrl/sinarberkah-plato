@@ -128,9 +128,9 @@ test/                 # Vitest tests & Playwright E2E suite
 ## Deployment to Vercel
 
 1. Push your branch to your Git remote and import the project into Vercel.
-2. **Manual Vercel Project Setting required for SvelteKit 3 (`@sveltejs/adapter-vercel` 7.x)**:
-   - Open **Project Settings > Build & Deployment > Node.js Version** and ensure Node.js is set to **24.x** (minimum `>= 22.17`; Node 20 is unsupported in SvelteKit 3 / Vite 8).
-   - Verify **Install Command** (`bun install`), **Build Command** (`bun run build`), and **Output Directory** (auto-detected `.vercel/output`).
+2. **Manual Vercel Project Settings required for SvelteKit 3 (`@sveltejs/adapter-vercel` 7.x)**:
+   - Set **Framework Preset** to **`SvelteKit`** with all command overrides (**Build Command**, **Output Directory**, **Install Command**, **Development Command**) **OFF** so Vercel auto-detects `bun.lock` and `.vercel/output`.
+   - Under **Project Settings > Build & Deployment > Node.js Version**, set Node.js to **`24.x`** (`vite.config.ts` targets `nodejs24.x`; `package.json` omits `engines.node` to avoid Vercel's `Node.Js Version Override` warning).
 3. Configure environment variables in **Project Settings > Environment Variables**:
 
    | Variable                     | Production Value                  | Preview / Dev Value               |
